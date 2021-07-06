@@ -1,0 +1,12 @@
+.header{
+    grid-area: head;
+    background-color: black;
+    color: white;
+    height: 100px;
+    text-align: center;
+}
+
+.name{
+    padding-top: 30px;
+    font-size: 30px;
+}

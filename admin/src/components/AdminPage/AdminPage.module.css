@@ -1,0 +1,10 @@
+.app-wrapper{
+    display: grid;
+
+    grid-template-rows:  2fr;
+    grid-template-columns: 2fr;
+    grid-template-areas:
+          'head'
+          'nav';
+    grid-gap: 1em;
+}
