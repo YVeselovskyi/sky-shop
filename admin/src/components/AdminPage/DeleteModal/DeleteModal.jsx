@@ -7,8 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-// eslint-disable-next-line no-unused-vars
-const DeleteModal = (props) => {
+const DeleteModal = () => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {

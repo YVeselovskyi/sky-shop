@@ -70,7 +70,6 @@ const fields = [
     headerAlign: 'center',
     align: 'center',
     valueFormatter: (params) => `$${params.value}`,
-
   },
   {
     field: 'edit',
