@@ -4,7 +4,7 @@ import {
 } from '@material-ui/data-grid';
 import s from './Products.module.css';
 import { EditModalProduct } from '../AdminPage/EditModal/EditModal';
-import { DeleteModalProduct } from '../AdminPage/DeleteModal/DeleteModal';
+import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
 
 const goods = [
   {
@@ -88,7 +88,11 @@ const fields = [
     width: 120,
     sortable: false,
     // eslint-disable-next-line no-unused-vars
-    renderCell: (params: GridCellParams) => <DeleteModalProduct />,
+    renderCell: (params: GridCellParams) => {
+      const productIndex = goods.findIndex((obj) => obj.id === params.id);
+      const product = goods[productIndex];
+      return <DeleteModal item={product} array={goods} />;
+    },
   },
 ];
 

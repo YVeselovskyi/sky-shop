@@ -7,7 +7,7 @@ import {
 } from '@material-ui/data-grid';
 import s from './Users.module.css';
 
-import { DeleteModalUser } from '../AdminPage/DeleteModal/DeleteModal';
+import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
 import { EditModalUser } from '../AdminPage/EditModal/EditModal';
 
 const users = [
@@ -98,9 +98,12 @@ const fields = [
     width: '9em',
     sortable: false,
     // eslint-disable-next-line no-unused-vars
-    renderCell: (params: GridCellParams) => (
-      <DeleteModalUser />
-    ),
+    renderCell: (params: GridCellParams) => {
+      const userIndex = users.findIndex((obj) => obj.id === params.id);
+      const user = users[userIndex];
+
+      return <DeleteModal item={user} array={users} />;
+    },
   },
 ];
 
