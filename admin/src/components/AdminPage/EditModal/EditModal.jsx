@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,19 +16,30 @@ const EditModalUser = (props) => {
   const USER = props.user;
   const [open, setOpen] = React.useState(false);
   // eslint-disable-next-line no-unused-vars
-  const [value, setValue] = React.useState(USER.gender);
-
-  const handleChange = (event) => {
-    USER.gender = event.target.value;
-    setValue(event.target.value);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const [genderValue, setGenderValue] = React.useState(USER.gender);
+  // eslint-disable-next-line no-undef,no-unused-vars
+  const emailRef = useRef(USER.email);
+  const usernameRef = useRef(USER.username);
+  const ageRef = useRef(USER.age);
+  const handleRadioChange = (event) => {
+    setGenderValue(event.target.value);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleSave = () => {
+    USER.email = emailRef.current.value;
+    USER.username = usernameRef.current.value;
+    USER.age = ageRef.current.value;
+    USER.gender = genderValue;
+    // eslint-disable-next-line no-restricted-globals
+    handleClose();
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
   return (
@@ -45,8 +56,10 @@ const EditModalUser = (props) => {
             id="email"
             label="Email Address"
             type="email"
+            required="true"
             fullWidth
             defaultValue={USER.email}
+            inputRef={emailRef}
             variant="outlined"
           />
           <TextField
@@ -55,8 +68,10 @@ const EditModalUser = (props) => {
             id="username"
             label="Username"
             type="string"
+            required="true"
             fullWidth
             defaultValue={USER.username}
+            inputRef={usernameRef}
             variant="outlined"
           />
           <TextField
@@ -65,13 +80,15 @@ const EditModalUser = (props) => {
             id="age"
             label="Age"
             type="number"
+            required="true"
             fullWidth
             defaultValue={USER.age}
+            inputRef={ageRef}
             variant="outlined"
           />
           <FormControl component="fieldset">
             <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup aria-label="gender" name="gender" value={USER.gender} onChange={handleChange}>
+            <RadioGroup aria-label="gender" name="gender" defaultValue={USER.gender} onChange={handleRadioChange}>
               <FormControlLabel value="M" control={<Radio />} label="Male" />
               <FormControlLabel value="F" control={<Radio />} label="Female" />
             </RadioGroup>
@@ -81,7 +98,7 @@ const EditModalUser = (props) => {
           <Button onClick={handleClose} color="primary" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" variant="contained" startIcon={<SaveIcon />}>
+          <Button onClick={handleSave} color="primary" variant="contained" startIcon={<SaveIcon />}>
             Save
           </Button>
         </DialogActions>
@@ -93,6 +110,10 @@ const EditModalUser = (props) => {
 const EditModalProduct = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
   const PRODUCT = props.product;
+  const nameRef = useRef(PRODUCT.name);
+  const descriptionRef = useRef(PRODUCT.description);
+  const categoryRef = useRef(PRODUCT.category);
+  const priceRef = useRef(PRODUCT.price);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -103,9 +124,22 @@ const EditModalProduct = (props) => {
     setOpen(false);
   };
 
+  const handleSave = () => {
+    PRODUCT.name = nameRef.current.value;
+    PRODUCT.description = descriptionRef.current.value;
+    PRODUCT.category = categoryRef.current.value;
+    PRODUCT.price = priceRef.current.value;
+    handleClose();
+  };
+
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen} startIcon={<EditIcon />}>
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={handleClickOpen}
+        startIcon={<EditIcon />}
+      >
         Edit
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -119,6 +153,7 @@ const EditModalProduct = (props) => {
             type="name"
             fullWidth
             defaultValue={PRODUCT.name}
+            inputRef={nameRef}
             variant="outlined"
           />
           <TextField
@@ -129,6 +164,7 @@ const EditModalProduct = (props) => {
             type="string"
             fullWidth
             defaultValue={PRODUCT.description}
+            inputRef={descriptionRef}
             variant="outlined"
           />
           <TextField
@@ -139,6 +175,7 @@ const EditModalProduct = (props) => {
             type="number"
             fullWidth
             defaultValue={PRODUCT.price}
+            inputRef={priceRef}
             variant="outlined"
           />
           <TextField
@@ -149,6 +186,7 @@ const EditModalProduct = (props) => {
             type="string"
             fullWidth
             defaultValue={PRODUCT.category}
+            inputRef={categoryRef}
             variant="outlined"
           />
         </DialogContent>
@@ -156,7 +194,7 @@ const EditModalProduct = (props) => {
           <Button onClick={handleClose} color="primary" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" variant="contained" startIcon={<SaveIcon />}>
+          <Button onClick={handleSave} color="primary" variant="contained" startIcon={<SaveIcon />}>
             Save
           </Button>
         </DialogActions>
