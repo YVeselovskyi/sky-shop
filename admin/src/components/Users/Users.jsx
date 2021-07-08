@@ -12,7 +12,7 @@ import { EditModalUser } from '../AdminPage/EditModal/EditModal';
 
 const users = [
   {
-    id: 1, email: 'zabolotnyi.n@gmail.com', username: 'nazarii', age: 19, gender: 'M',
+    id: 1, email: 'nnaqwe@gmail.com', username: 'nazarii', age: 19, gender: 'M',
   },
   {
     id: 2, email: 'anna8855@gmail.com', username: 'annet_115', age: 19, gender: 'F',
