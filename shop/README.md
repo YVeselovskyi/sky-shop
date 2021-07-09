@@ -1,2 +1,0 @@
-# sky-shop
-# FrontEnd sources
