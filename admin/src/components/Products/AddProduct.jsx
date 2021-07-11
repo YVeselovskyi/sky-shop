@@ -31,7 +31,7 @@ const AddProduct = (props) => {
       category: categoryRef.current.value,
       price: priceRef.current.value,
     };
-    props.addProduct(product);
+    props.state.addProduct(product);
     handleClose();
   };
 

@@ -36,10 +36,6 @@ const state = {
       {
         id: 11, email: 'vasek@mail.ru', username: 'sswwqqaa', age: 12, gender: 'F',
       }],
-    addUser(user) {
-      state.usersPage.users = Object.assign([], state.usersPage.users);
-      state.usersPage.users.push(user);
-    },
   },
   productsPage: {
     products: [
@@ -95,5 +91,5 @@ const removeProduct = (product) => {
 };
 
 export {
-  state, addUser, deleteUser, addProduct, removeProduct,
+  state, addProduct, addUser, deleteUser, removeProduct,
 };

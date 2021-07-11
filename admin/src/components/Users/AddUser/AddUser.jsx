@@ -88,7 +88,7 @@ const AddUserModal = (props) => {
           />
           <FormControl component="fieldset">
             <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup aria-label="gender" name="gender" onChange={handleRadioChange}>
+            <RadioGroup aria-label="gender" name="gender" defaultValue="M" onChange={handleRadioChange}>
               <FormControlLabel value="M" control={<Radio />} label="Male" />
               <FormControlLabel value="F" control={<Radio />} label="Female" />
             </RadioGroup>
