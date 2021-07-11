@@ -1,5 +1,10 @@
 // eslint-disable-next-line import/no-mutable-exports
 
+import ReactDOM from 'react-dom';
+import React from 'react';
+// eslint-disable-next-line import/no-cycle
+import App from '../App';
+
 const state = {
   usersPage: {
     users: [
@@ -73,23 +78,52 @@ const state = {
 const addUser = (user) => {
   state.usersPage.users = Object.assign([], state.usersPage.users);
   state.usersPage.users.push(user);
+  // eslint-disable-next-line no-use-before-define
+  rerenderEntireTree();
 };
 
 const deleteUser = (user) => {
   state.usersPage.users = Object.assign([], state.usersPage.users);
   state.usersPage.users = state.usersPage.users.filter((item) => item !== user);
+  // eslint-disable-next-line no-use-before-define
+  rerenderEntireTree();
 };
 
 const addProduct = (product) => {
   state.productsPage.products = Object.assign([], state.productsPage.products);
   state.productsPage.products.push(product);
+  // eslint-disable-next-line no-use-before-define
+  rerenderEntireTree();
 };
 
 const removeProduct = (product) => {
   state.productsPage.products = Object.assign([], state.productsPage.products);
   state.productsPage.products = state.productsPage.products.filter((item) => item !== product);
+  // eslint-disable-next-line no-use-before-define
+  rerenderEntireTree();
+};
+
+const observe = (observer) => {
+  // eslint-disable-next-line no-use-before-define
+  rerenderEntireTree = observer;
+};
+
+// eslint-disable-next-line import/no-mutable-exports
+let rerenderEntireTree = () => {
+  ReactDOM.render(
+    <React.StrictMode>
+      <App
+        state={state}
+        addUser={addUser}
+        deleteUser={deleteUser}
+        addProduct={addProduct}
+        removeProduct={removeProduct}
+      />
+    </React.StrictMode>,
+    document.getElementById('root'),
+  );
 };
 
 export {
-  state, addProduct, addUser, deleteUser, removeProduct,
+  state, addProduct, addUser, deleteUser, removeProduct, rerenderEntireTree, observe,
 };

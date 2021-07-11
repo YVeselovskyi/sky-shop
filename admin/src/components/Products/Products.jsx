@@ -4,6 +4,7 @@ import {
   DataGrid, GridToolbarContainer, GridToolbarFilterButton, GridCellParams,
 } from '@material-ui/data-grid';
 import s from './Products.module.css';
+// eslint-disable-next-line import/no-cycle
 import { EditModalProduct } from '../AdminPage/EditModal/EditModal';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
 // eslint-disable-next-line import/named
@@ -77,12 +78,14 @@ const Products = (props) => {
         columns={fields}
         pageSize={10}
         disableColumnMenu
+        autoHeight
         components={{
           Toolbar: function CustomToolbar() {
             return (
               <GridToolbarContainer>
                 <GridToolbarFilterButton />
                 <AddProduct
+                  state={props.state}
                   addProduct={props.addProduct}
                   array={goods}
                 />

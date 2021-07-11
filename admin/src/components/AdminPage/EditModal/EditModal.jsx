@@ -10,6 +10,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import {
   FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
 } from '@material-ui/core';
+// eslint-disable-next-line import/no-cycle
+import { rerenderEntireTree } from '../../../redux/state';
 
 const EditModalUser = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
@@ -35,6 +37,7 @@ const EditModalUser = (props) => {
     USER.age = ageRef.current.value;
     USER.gender = genderValue;
     // eslint-disable-next-line no-restricted-globals
+    rerenderEntireTree();
     handleClose();
   };
 
@@ -130,6 +133,7 @@ const EditModalProduct = (props) => {
     PRODUCT.category = categoryRef.current.value;
     PRODUCT.price = priceRef.current.value;
     handleClose();
+    rerenderEntireTree();
   };
 
   return (

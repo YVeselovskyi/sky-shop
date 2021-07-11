@@ -8,6 +8,7 @@ import {
 import s from './Users.module.css';
 
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
+// eslint-disable-next-line import/no-cycle
 import { EditModalUser } from '../AdminPage/EditModal/EditModal';
 import { AddUserModal } from './AddUser/AddUser';
 

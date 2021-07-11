@@ -1,10 +1,7 @@
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { rerenderEntireTree } from './render';
-import {
-  addProduct, addUser, deleteUser, removeProduct, state,
-} from './redux/state';
+import { rerenderEntireTree, observe } from './redux/state';
 
-rerenderEntireTree(state, addUser, deleteUser, addProduct, removeProduct);
-
+rerenderEntireTree();
+observe(rerenderEntireTree);
 reportWebVitals();

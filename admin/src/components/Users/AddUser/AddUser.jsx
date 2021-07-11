@@ -28,7 +28,7 @@ const AddUserModal = (props) => {
 
   const handleSave = () => {
     const user = {
-      id: props.array.length + 1,
+      id: props.array[props.array.length - 1].id + 1,
       email: emailRef.current.value,
       username: usernameRef.current.value,
       age: ageRef.current.value,

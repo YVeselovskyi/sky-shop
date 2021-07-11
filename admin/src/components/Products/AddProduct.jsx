@@ -25,13 +25,13 @@ const AddProduct = (props) => {
 
   const handleSave = () => {
     const product = {
-      id: props.array.length + 1,
+      id: props.array[props.array.length - 1].id + 1,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
       category: categoryRef.current.value,
       price: priceRef.current.value,
     };
-    props.state.addProduct(product);
+    props.addProduct(product);
     handleClose();
   };
 

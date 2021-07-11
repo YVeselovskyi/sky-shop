@@ -2,6 +2,7 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
+// eslint-disable-next-line import/no-cycle
 import { AdminPage } from './components/AdminPage/AdminPage';
 
 function App(props) {
