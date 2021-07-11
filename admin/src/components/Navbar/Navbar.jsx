@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { Products } from '../Products/Products';
 import { Users } from '../Users/Users';
@@ -23,7 +22,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <span>{children}</span>
         </Box>
       )}
     </div>
@@ -32,7 +31,6 @@ function TabPanel(props) {
 
 TabPanel.propTypes = {
   children: PropTypes.node,
-  // eslint-disable-next-line react/forbid-prop-types
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };
@@ -57,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -79,7 +77,14 @@ const Navbar = () => {
         <Tab label="Products" {...a11yProps(1)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Users />
+        <Users
+            /* eslint-disable-next-line react/destructuring-assignment */
+          state={props.state.usersPage}
+            /* eslint-disable-next-line react/destructuring-assignment */
+          addUser={props.addUser}
+            /* eslint-disable-next-line react/destructuring-assignment */
+          deleteUser={props.deleteUser}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Products />
