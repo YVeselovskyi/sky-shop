@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -78,16 +79,17 @@ const Navbar = (props) => {
       </Tabs>
       <TabPanel value={value} index={0}>
         <Users
-            /* eslint-disable-next-line react/destructuring-assignment */
           state={props.state.usersPage}
-            /* eslint-disable-next-line react/destructuring-assignment */
           addUser={props.addUser}
-            /* eslint-disable-next-line react/destructuring-assignment */
           deleteUser={props.deleteUser}
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Products />
+        <Products
+          state={props.state.productsPage}
+          addProduct={props.addProduct}
+          removeProduct={props.removeProduct}
+        />
       </TabPanel>
     </div>
   );

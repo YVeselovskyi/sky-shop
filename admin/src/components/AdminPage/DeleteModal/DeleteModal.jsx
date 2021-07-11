@@ -42,7 +42,7 @@ const DeleteModal = (props) => {
         <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Delete this user? It will be deleted permanently.
+            Delete this item? It will be deleted permanently.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

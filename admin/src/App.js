@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import './App.css';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
@@ -7,8 +8,13 @@ function App(props) {
   return (
   // eslint-disable-next-line react/jsx-filename-extension
     <BrowserRouter>
-      {/* eslint-disable-next-line react/destructuring-assignment */}
-      <AdminPage state={props.state} addUser={props.addUser} deleteUser={props.deleteUser} />
+      <AdminPage
+        state={props.state}
+        addUser={props.addUser}
+        deleteUser={props.deleteUser}
+        addProduct={props.addProduct}
+        removeProduct={props.removeProduct}
+      />
     </BrowserRouter>
   );
 }
