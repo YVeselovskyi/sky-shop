@@ -12,7 +12,7 @@ import { AddProduct } from './AddProduct';
 
 const Products = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
-  const goods = props.state.products;
+  const goods = props.state.productsPage.products;
   const fields = [
     {
       field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center',

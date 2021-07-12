@@ -1,11 +1,14 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
+import Media from 'react-media';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
+// eslint-disable-next-line import/no-cycle
 import { Products } from '../Products/Products';
+// eslint-disable-next-line import/no-cycle
 import { Users } from '../Users/Users';
 
 function TabPanel(props) {
@@ -43,7 +46,7 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStylesDesktop = makeStyles((theme) => ({
   root: {
     display: 'grid',
     gridTemplateRows: '1fr 1fr',
@@ -56,8 +59,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = (props) => {
-  const classes = useStyles();
+const useStylesMobile = makeStyles((theme) => ({
+  root: {
+    display: 'grid',
+    gridTemplateRows: '1fr 1fr',
+    gridTemplateColumns: '1fr',
+    backgroundColor: theme.palette.background.paper,
+    height: 224,
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
+const DesktopNav = (props) => {
+  const classes = useStylesDesktop();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -65,6 +81,7 @@ const Navbar = (props) => {
   };
 
   return (
+
     <div className={classes.root}>
       <Tabs
         orientation="vertical"
@@ -79,14 +96,14 @@ const Navbar = (props) => {
       </Tabs>
       <TabPanel value={value} index={0}>
         <Users
-          state={props.state.usersPage}
+          state={props.state}
           addUser={props.addUser}
           deleteUser={props.deleteUser}
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Products
-          state={props.state.productsPage}
+          state={props.state}
           addProduct={props.addProduct}
           removeProduct={props.removeProduct}
         />
@@ -94,5 +111,70 @@ const Navbar = (props) => {
     </div>
   );
 };
+
+const MobileNav = (props) => {
+  const classes = useStylesMobile();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+
+    <div className={classes.root}>
+      <Tabs
+        orientation="horizontal"
+        variant="standard"
+        value={value}
+        onChange={handleChange}
+        aria-label="Vertical tabs example"
+        className={classes.tabs}
+      >
+        <Tab label="Users" {...a11yProps(0)} />
+        <Tab label="Products" {...a11yProps(1)} />
+      </Tabs>
+      <TabPanel value={value} index={0}>
+        <Users
+          state={props.state}
+          addUser={props.addUser}
+          deleteUser={props.deleteUser}
+        />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <Products
+          state={props.state}
+          addProduct={props.addProduct}
+          removeProduct={props.removeProduct}
+        />
+      </TabPanel>
+    </div>
+  );
+};
+
+const Navbar = (props) => (
+  <>
+    <Media query="(max-width: 599px)">
+      {(matches) => (matches
+        ? (
+          <MobileNav
+            state={props.state}
+            addUser={props.addUser}
+            deleteUser={props.deleteUser}
+            addProduct={props.addProduct}
+            removeProduct={props.removeProduct}
+          />
+        ) : (
+          <DesktopNav
+            state={props.state}
+            addUser={props.addUser}
+            deleteUser={props.deleteUser}
+            addProduct={props.addProduct}
+            removeProduct={props.removeProduct}
+          />
+        ))}
+    </Media>
+  </>
+);
 
 export { Navbar };

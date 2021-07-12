@@ -14,7 +14,7 @@ import { AddUserModal } from './AddUser/AddUser';
 
 const Users = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
-  const { users } = props.state;
+  const { users } = props.state.usersPage;
   const fields = [
     {
       field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center',
@@ -80,6 +80,8 @@ const Users = (props) => {
         rows={users}
         columns={fields}
         pageSize={10}
+        autoHeight
+        disableColumnMenu
         components={{
           Toolbar: function CustomToolbar() {
             return (
@@ -91,8 +93,6 @@ const Users = (props) => {
             );
           },
         }}
-        autoHeight
-        disableColumnMenu
       />
     </div>
   );
