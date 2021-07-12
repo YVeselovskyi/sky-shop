@@ -45,35 +45,10 @@ function a11yProps(index) {
     'aria-controls': `vertical-tabpanel-${index}`,
   };
 }
+let useStyles;
 
-const useStylesDesktop = makeStyles((theme) => ({
-  root: {
-    display: 'grid',
-    gridTemplateRows: '1fr 1fr',
-    gridTemplateColumns: '1fr 7fr',
-    backgroundColor: theme.palette.background.paper,
-    height: 224,
-  },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-  },
-}));
-
-const useStylesMobile = makeStyles((theme) => ({
-  root: {
-    display: 'grid',
-    gridTemplateRows: '1fr 1fr',
-    gridTemplateColumns: '1fr',
-    backgroundColor: theme.palette.background.paper,
-    height: 224,
-  },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-  },
-}));
-
-const DesktopNav = (props) => {
-  const classes = useStylesDesktop();
+const Nav = (props) => {
+  const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -84,7 +59,7 @@ const DesktopNav = (props) => {
 
     <div className={classes.root}>
       <Tabs
-        orientation="vertical"
+        orientation={props.tabsVariant}
         variant="standard"
         value={value}
         onChange={handleChange}
@@ -112,69 +87,51 @@ const DesktopNav = (props) => {
   );
 };
 
-const MobileNav = (props) => {
-  const classes = useStylesMobile();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
+const Navbar = (props) => {
+  let tabsVariant;
   return (
-
-    <div className={classes.root}>
-      <Tabs
-        orientation="horizontal"
-        variant="standard"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
-        className={classes.tabs}
-      >
-        <Tab label="Users" {...a11yProps(0)} />
-        <Tab label="Products" {...a11yProps(1)} />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        <Users
-          state={props.state}
-          addUser={props.addUser}
-          deleteUser={props.deleteUser}
-        />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <Products
-          state={props.state}
-          addProduct={props.addProduct}
-          removeProduct={props.removeProduct}
-        />
-      </TabPanel>
-    </div>
+    <>
+      <Media query="(max-width: 990px)">
+        {(matches) => {
+          tabsVariant = (matches ? ('horizontal') : ('vertical'));
+          useStyles = (matches) ? makeStyles((theme) => ({
+            root: {
+              display: 'grid',
+              gridTemplateRows: '1fr 1fr',
+              gridTemplateColumns: '1fr',
+              backgroundColor: theme.palette.background.paper,
+              height: 224,
+            },
+            tabs: {
+              borderRight: `1px solid ${theme.palette.divider}`,
+            },
+          }))
+            : makeStyles((theme) => ({
+              root: {
+                display: 'grid',
+                gridTemplateRows: '1fr 1fr',
+                gridTemplateColumns: '1fr 7fr',
+                backgroundColor: theme.palette.background.paper,
+                height: 224,
+              },
+              tabs: {
+                borderRight: `1px solid ${theme.palette.divider}`,
+              },
+            }));
+          return (
+            <Nav
+              state={props.state}
+              addUser={props.addUser}
+              deleteUser={props.deleteUser}
+              addProduct={props.addProduct}
+              removeProduct={props.removeProduct}
+              tabsVariant={tabsVariant}
+            />
+          );
+        }}
+      </Media>
+    </>
   );
 };
-
-const Navbar = (props) => (
-  <>
-    <Media query="(max-width: 990px)">
-      {(matches) => (matches
-        ? (
-          <MobileNav
-            state={props.state}
-            addUser={props.addUser}
-            deleteUser={props.deleteUser}
-            addProduct={props.addProduct}
-            removeProduct={props.removeProduct}
-          />
-        ) : (
-          <DesktopNav
-            state={props.state}
-            addUser={props.addUser}
-            deleteUser={props.deleteUser}
-            addProduct={props.addProduct}
-            removeProduct={props.removeProduct}
-          />
-        ))}
-    </Media>
-  </>
-);
 
 export { Navbar };
