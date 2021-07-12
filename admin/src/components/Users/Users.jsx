@@ -36,14 +36,14 @@ const Users = (props) => {
       field: 'age',
       headerName: 'Age',
       type: 'number',
-      width: '8em',
+      width: 100,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'gender',
       headerName: 'Gender',
-      width: '9em',
+      width: 120,
       headerAlign: 'center',
       align: 'center',
 
@@ -51,7 +51,7 @@ const Users = (props) => {
     {
       field: 'edit',
       headerName: '    ',
-      width: '7em',
+      width: 100,
       sortable: false,
 
       renderCell: (params: GridCellParams) => {
@@ -62,7 +62,7 @@ const Users = (props) => {
     {
       field: 'delete',
       headerName: '      ',
-      width: '9em',
+      width: 120,
       sortable: false,
       // eslint-disable-next-line no-unused-vars
       renderCell: (params: GridCellParams) => {
@@ -80,8 +80,8 @@ const Users = (props) => {
         rows={users}
         columns={fields}
         pageSize={10}
-        autoHeight
         disableColumnMenu
+        autoHeight
         components={{
           Toolbar: function CustomToolbar() {
             return (

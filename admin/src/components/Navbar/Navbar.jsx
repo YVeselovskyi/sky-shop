@@ -154,7 +154,7 @@ const MobileNav = (props) => {
 
 const Navbar = (props) => (
   <>
-    <Media query="(max-width: 599px)">
+    <Media query="(max-width: 990px)">
       {(matches) => (matches
         ? (
           <MobileNav
