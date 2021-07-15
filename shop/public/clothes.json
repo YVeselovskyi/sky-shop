@@ -1,0 +1,115 @@
+[
+    {
+      "id": 0,
+      "title": "BOSS Bodywear",
+      "author": "ASOS DESIGN oversized t-shirt",
+      "image": "/img/img-1.webp",
+      "price": 72
+    },
+    {
+      "id": 1,
+      "title": "Nike Air Vapormax",
+      "author": "trainers in anthracite/tech grey",
+      "image": "/img/img-2.webp",
+      "price": 112
+    },
+    {
+      "id": 2,
+      "title": "Selected Homme",
+      "author": "button through cardigan in off white",
+      "image": "/img/img-3.webp",
+      "price": 55
+    },
+    {
+      "id": 3,
+      "title": "New Look NLM",
+      "author": "co-ord t-shirt with pockets in pink",
+      "image": "/img/img-4.webp",
+      "price": 67
+    },
+    {
+      "id": 4,
+      "title": "BIG DO DRESSES",
+      "author": "ТMain-character energy",
+      "image": "/img/img-5.webp",
+      "price": 80
+    },
+    {
+      "id": 5,
+      "title": "SUN-READY SHOES",
+      "author": "It`s pedi szn, ppl",
+      "image": "/img/img-6.webp",
+      "price": 75
+    },
+    {
+      "id": 6,
+      "title": "TOPSHOP",
+      "author": "Same icon, new home",
+      "image": "/img/img-7.webp",
+      "price": 34
+    },
+    {
+      "id": 7,
+      "title": "FACE + BODY",
+      "author": "Exclusive: Olivia Bowen x Easilocks",
+      "image": "/img/img-8.webp",
+      "price": 48
+    },
+    {
+      "id": 8,
+      "title": "SPACE JAM",
+      "author": "Slam dunk 'fits",
+      "image": "/img/img-9.webp",
+      "price": 347,
+      "rating": 5
+    },
+    {
+      "id": 9,
+      "title": "Monki Willa",
+      "author": "ecovero smile print mini dress in pink",
+      "image": "/img/img-10.webp",
+      "price": 24
+    },
+    {
+      "id": 10,
+      "title": "ASOS DESIGN Space ",
+      "author": "relaxed colour block bowling shirt",
+      "image": "/img/img-11.webp",
+      "price": 82
+    },
+    {
+      "id": 11,
+      "title": "Monki Mimmi ",
+      "author": "ecovero midi shirt dress in green",
+      "image": "/img/img-12.webp",
+      "price": 39
+    },
+    {
+      "id": 12,
+      "title": "Pretty Lavish",
+      "author": " tucked waist shirt midi dress in green",
+      "image": "/img/img-13.webp",
+      "price": 43
+    },
+    {
+      "id": 13,
+      "title": "Vans Slip-On",
+      "author": "checkerboard plimsolls in black",
+      "image": "/img/img-14.webp",
+      "price": 29
+    },
+    {
+      "id": 14,
+      "title": "ASOS DESIGN",
+      "author": "lace insert mini skater sundress",
+      "image": "/img/img-15.webp",
+      "price": 27
+    },
+    {
+      "id": 15,
+      "title": "New Balance 373",
+      "author": "trainers in grey",
+      "image": "/img/img-16.webp",
+      "price": 62
+    }
+]
