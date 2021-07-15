@@ -3,16 +3,18 @@ import * as React from 'react';
 import {
   DataGrid, GridToolbarContainer, GridToolbarFilterButton, GridCellParams,
 } from '@material-ui/data-grid';
+import { useSelector } from 'react-redux';
 import s from './Products.module.css';
 // eslint-disable-next-line import/no-cycle
 import { EditModalProduct } from '../AdminPage/EditModal/EditModal';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
 // eslint-disable-next-line import/named
 import { AddProduct } from './AddProduct';
+import { deleteProduct } from './store/productsSlice';
 
-const Products = (props) => {
+const Products = () => {
   // eslint-disable-next-line react/destructuring-assignment
-  const goods = props.state.products;
+  const goods = useSelector((state) => state.products.list);
   const fields = [
     {
       field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center',
@@ -68,7 +70,7 @@ const Products = (props) => {
         const productIndex = goods.findIndex((obj) => obj.id === params.id);
         const product = goods[productIndex];
         // eslint-disable-next-line max-len
-        return <DeleteModal state={props.state} item={product} array={goods} remove={props.removeProduct} />;
+        return <DeleteModal item={product} onDelete={deleteProduct} />;
       },
     }];
   return (
@@ -84,11 +86,7 @@ const Products = (props) => {
             return (
               <GridToolbarContainer>
                 <GridToolbarFilterButton />
-                <AddProduct
-                  state={props.state}
-                  addProduct={props.addProduct}
-                  array={goods}
-                />
+                <AddProduct />
               </GridToolbarContainer>
             );
           },

@@ -2,14 +2,22 @@
   "name": "ssp-try",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "14.17.3"
+  },
   "dependencies": {
     "@fontsource/roboto": "^4.4.5",
     "@material-ui/core": "latest",
+    "@material-ui/data-grid": "^4.0.0-alpha.33",
+    "@material-ui/icons": "^4.11.2",
+    "@reduxjs/toolkit": "^1.6.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "react": "latest",
+    "react-media": "^1.10.0",
     "react-dom": "latest",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
@@ -35,8 +43,7 @@
       "react/forbid-prop-types": 0,
       "react/jsx-props-no-spreading": 0,
       "import/no-extraneous-dependencies": 0,
-      "react/jsx-filename-extension": 0,
-      "import/no-named-as-default": 0
+      "react/jsx-filename-extension": 0
     }
   },
   "browserslist": {
@@ -52,9 +59,11 @@
     ]
   },
   "devDependencies": {
-    "@material-ui/data-grid": "^4.0.0-alpha.33",
-    "@material-ui/icons": "^4.11.2",
     "eslint-config-airbnb": "^18.2.1",
+
     "prop-types": "^15.7.2"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }

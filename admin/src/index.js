@@ -1,7 +1,15 @@
 import './index.css';
-import reportWebVitals from './reportWebVitals';
-import { rerenderEntireTree, observe } from './redux/state';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
-rerenderEntireTree();
-observe(rerenderEntireTree);
-reportWebVitals();
+import { store } from './store/store';
+
+import { App } from './App';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root'),
+);

@@ -6,14 +6,18 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import { GridAddIcon } from '@material-ui/data-grid';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct } from './store/productsSlice';
 
-const AddProduct = (props) => {
+const AddProduct = () => {
   // eslint-disable-next-line react/destructuring-assignment
   const nameRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
   const priceRef = useRef();
   const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const productsList = useSelector((state) => state.products.list);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,13 +29,14 @@ const AddProduct = (props) => {
 
   const handleSave = () => {
     const product = {
-      id: props.array[props.array.length - 1].id + 1,
+      id: productsList[productsList.length - 1].id + 1,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
       category: categoryRef.current.value,
       price: priceRef.current.value,
     };
-    props.addProduct(product);
+
+    dispatch(addProduct(product));
     handleClose();
   };
 

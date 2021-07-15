@@ -9,14 +9,18 @@ import {
   FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
 } from '@material-ui/core';
 import { GridAddIcon } from '@material-ui/data-grid';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser } from '../store/usersSlice';
 
-const AddUserModal = (props) => {
+const AddUserModal = () => {
   // eslint-disable-next-line react/destructuring-assignment
   const [open, setOpen] = React.useState(false);
   const [genderValue, setGenderValue] = React.useState();
   const emailRef = React.useRef('');
   const usernameRef = React.useRef('');
   const ageRef = React.useRef('');
+  const dispatch = useDispatch();
+  const usersList = useSelector((state) => state.users.list);
 
   const handleRadioChange = (event) => {
     setGenderValue(event.target.value);
@@ -28,13 +32,13 @@ const AddUserModal = (props) => {
 
   const handleSave = () => {
     const user = {
-      id: props.array[props.array.length - 1].id + 1,
+      id: usersList[usersList.length - 1].id + 1,
       email: emailRef.current.value,
       username: usernameRef.current.value,
       age: ageRef.current.value,
       gender: genderValue,
     };
-    props.addUser(user);
+    dispatch(addUser(user));
     handleClose();
   };
 

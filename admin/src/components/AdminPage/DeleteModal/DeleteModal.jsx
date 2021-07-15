@@ -6,9 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useDispatch } from 'react-redux';
 
 const DeleteModal = (props) => {
   const [open, setOpen] = React.useState(false);
+  const { onDelete } = props;
+  const dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -19,7 +22,7 @@ const DeleteModal = (props) => {
   };
 
   const handleDelete = () => {
-    props.remove(props.item);
+    dispatch(onDelete(props.item.id));
     handleClose();
   };
 

@@ -11,18 +11,23 @@ import {
   FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
 } from '@material-ui/core';
 // eslint-disable-next-line import/no-cycle
-import { rerenderEntireTree } from '../../../redux/state';
+import { useDispatch } from 'react-redux';
+// eslint-disable-next-line import/named
+import { editUser } from '../../Users/store/usersSlice';
+import { editProduct } from '../../Products/store/productsSlice';
 
 const EditModalUser = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
-  const USER = props.user;
+  const { user } = props;
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   // eslint-disable-next-line no-unused-vars
-  const [genderValue, setGenderValue] = React.useState(USER.gender);
+  const [genderValue, setGenderValue] = React.useState(user.gender);
   // eslint-disable-next-line no-undef,no-unused-vars
-  const emailRef = useRef(USER.email);
-  const usernameRef = useRef(USER.username);
-  const ageRef = useRef(USER.age);
+  const emailRef = useRef();
+  const usernameRef = useRef();
+  const ageRef = useRef();
+
   const handleRadioChange = (event) => {
     setGenderValue(event.target.value);
   };
@@ -32,12 +37,14 @@ const EditModalUser = (props) => {
   };
 
   const handleSave = () => {
-    USER.email = emailRef.current.value;
-    USER.username = usernameRef.current.value;
-    USER.age = ageRef.current.value;
-    USER.gender = genderValue;
-    // eslint-disable-next-line no-restricted-globals
-    rerenderEntireTree();
+    const editedUser = {
+      id: user.id,
+      email: emailRef.current.value,
+      username: usernameRef.current.value,
+      age: ageRef.current.value,
+      gender: genderValue,
+    };
+    dispatch(editUser(editedUser));
     handleClose();
   };
 
@@ -61,7 +68,7 @@ const EditModalUser = (props) => {
             type="email"
             required="true"
             fullWidth
-            defaultValue={USER.email}
+            defaultValue={user.email}
             inputRef={emailRef}
             variant="outlined"
           />
@@ -73,7 +80,7 @@ const EditModalUser = (props) => {
             type="string"
             required="true"
             fullWidth
-            defaultValue={USER.username}
+            defaultValue={user.username}
             inputRef={usernameRef}
             variant="outlined"
           />
@@ -85,13 +92,13 @@ const EditModalUser = (props) => {
             type="number"
             required="true"
             fullWidth
-            defaultValue={USER.age}
+            defaultValue={user.age}
             inputRef={ageRef}
             variant="outlined"
           />
           <FormControl component="fieldset">
             <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup aria-label="gender" name="gender" defaultValue={USER.gender} onChange={handleRadioChange}>
+            <RadioGroup aria-label="gender" name="gender" defaultValue={genderValue} onChange={handleRadioChange}>
               <FormControlLabel value="M" control={<Radio />} label="Male" />
               <FormControlLabel value="F" control={<Radio />} label="Female" />
             </RadioGroup>
@@ -112,12 +119,13 @@ const EditModalUser = (props) => {
 
 const EditModalProduct = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
-  const PRODUCT = props.product;
-  const nameRef = useRef(PRODUCT.name);
-  const descriptionRef = useRef(PRODUCT.description);
-  const categoryRef = useRef(PRODUCT.category);
-  const priceRef = useRef(PRODUCT.price);
+  const { product } = props;
+  const nameRef = useRef();
+  const descriptionRef = useRef();
+  const categoryRef = useRef();
+  const priceRef = useRef();
   const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -128,12 +136,15 @@ const EditModalProduct = (props) => {
   };
 
   const handleSave = () => {
-    PRODUCT.name = nameRef.current.value;
-    PRODUCT.description = descriptionRef.current.value;
-    PRODUCT.category = categoryRef.current.value;
-    PRODUCT.price = priceRef.current.value;
+    const editedProduct = {
+      id: product.id,
+      name: nameRef.current.value,
+      description: descriptionRef.current.value,
+      category: categoryRef.current.value,
+      price: priceRef.current.value,
+    };
+    dispatch(editProduct(editedProduct));
     handleClose();
-    rerenderEntireTree();
   };
 
   return (
@@ -156,7 +167,7 @@ const EditModalProduct = (props) => {
             label="Name"
             type="name"
             fullWidth
-            defaultValue={PRODUCT.name}
+            defaultValue={product.name}
             inputRef={nameRef}
             variant="outlined"
           />
@@ -167,7 +178,7 @@ const EditModalProduct = (props) => {
             label="Description"
             type="string"
             fullWidth
-            defaultValue={PRODUCT.description}
+            defaultValue={product.description}
             inputRef={descriptionRef}
             variant="outlined"
           />
@@ -178,7 +189,7 @@ const EditModalProduct = (props) => {
             label="Price"
             type="number"
             fullWidth
-            defaultValue={PRODUCT.price}
+            defaultValue={product.price}
             inputRef={priceRef}
             variant="outlined"
           />
@@ -189,7 +200,7 @@ const EditModalProduct = (props) => {
             label="Category"
             type="string"
             fullWidth
-            defaultValue={PRODUCT.category}
+            defaultValue={product.category}
             inputRef={categoryRef}
             variant="outlined"
           />
