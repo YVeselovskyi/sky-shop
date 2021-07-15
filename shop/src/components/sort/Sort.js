@@ -68,7 +68,7 @@ function sort({
 
    return (
       <>
-         <Grid item xs={12} sm={12} md={3}>
+         <Grid item xs={12} sm={12} md={4}>
             <Paper component='form' className={classes.search} elevation={3}>
                <InputBase
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -84,7 +84,7 @@ function sort({
                </IconButton>
             </Paper>
          </Grid>
-         <Grid item xs={6} sm={4} md={3}>
+         <Grid item xs={12} sm={6} md={4}>
             <Paper>
                <FormControl variant='outlined' className={classes.sortBy}>
                   <InputLabel id='demo-simple-select-outlined-label'>
@@ -125,19 +125,8 @@ function sort({
                </FormControl>
             </Paper>
          </Grid>
-         <Grid item xs={6} sm={4} md={3}>
-            <Paper>
-               <FormControl variant='outlined' className={classes.sortBy}>
-                  <InputLabel id='FilterBy'>Filter by</InputLabel>
-                  <Select label='Filter by' value={age} onChange={handleChange}>
-                     <MenuItem value={1}>Size</MenuItem>
-                     <MenuItem value={2}>Product type</MenuItem>
-                     <MenuItem value={3}>Color</MenuItem>
-                  </Select>
-               </FormControl>
-            </Paper>
-         </Grid>
-         <Grid item xs={12} sm={4} md={3}>
+
+         <Grid item xs={12} sm={6} md={4}>
             <ModalFormForBusket totalPrice={totalPrice} count={count} />
          </Grid>
       </>
