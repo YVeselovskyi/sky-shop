@@ -138,11 +138,7 @@ function sort({
             </Paper>
          </Grid>
          <Grid item xs={12} sm={4} md={3}>
-            <ModalFormForBusket
-               totalPrice={totalPrice}
-               count={count}
-               className={classes.bag}
-            />
+            <ModalFormForBusket totalPrice={totalPrice} count={count} />
          </Grid>
       </>
    );

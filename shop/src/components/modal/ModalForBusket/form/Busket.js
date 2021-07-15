@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import ProductList from './ProductList';
 
 function Copyright() {
    return (
@@ -60,9 +61,7 @@ export default function Busket(props) {
                Busket
             </Typography>
          </div>
-         <h1>
-            {props.totalPrice},{`amount ${props.count}`}
-         </h1>
+         <ProductList />
          <Box mt={8}>
             <Copyright />
          </Box>
