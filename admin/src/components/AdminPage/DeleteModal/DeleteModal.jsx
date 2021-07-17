@@ -6,9 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useDispatch } from 'react-redux';
 
-const DeleteModal = () => {
+const DeleteModal = (props) => {
   const [open, setOpen] = React.useState(false);
+  const { onDelete } = props;
+  const dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -19,6 +22,7 @@ const DeleteModal = () => {
   };
 
   const handleDelete = () => {
+    dispatch(onDelete(props.item.id));
     handleClose();
   };
 
@@ -41,7 +45,7 @@ const DeleteModal = () => {
         <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Delete this row? It will be deleted permanently.
+            Delete this item? It will be deleted permanently.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
