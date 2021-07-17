@@ -17,6 +17,10 @@ const productScheme = new Schema({
     type: String,
     require: false,
   },
+  imgUrl: {
+    type: String,
+    require: false,
+  },
 });
 
 module.exports = model('Product', productScheme);

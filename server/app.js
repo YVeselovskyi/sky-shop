@@ -4,6 +4,7 @@
 const Express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const config = require('./config.json');
 
 //collections
@@ -12,10 +13,9 @@ const Product = require('./models/Product');
 
 const app = new Express();
 
+app.use(cors());
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
-
-app.set('views', `${__dirname}/views`);
 
 const PORT = process.env.PORT || 3000;
 
@@ -37,11 +37,10 @@ const connectDbAndStartServer = async () => {
 
 app.post('/admin/addProduct', (req, res) => {
   const {
-    name, description, price, category,
+    name, description, price, category, imgUrl,
   } = req.body;
-
   const product = new Product({
-    name, description, price, category,
+    name, description, price, category, imgUrl,
   });
 
   product.save((err) => {
@@ -85,15 +84,18 @@ app.post('/admin/editProduct', async (req, res) => {
   if (!req.body) res.sendStatus(400);
 
   //{name: prdouctName, update: {parameters that we change} }
-  const { productName, update } = req.body;
-  console.log(`request body: ${productName}, ${update}`);
-  await User.findOneAndUpdate({ name: productName }, update, {
-    new: true,
-  }, (err, updatedProduct) => {
-    if (err) console.log(err);
+  const { name, update } = req.body;
+  console.log(`request body: ${name}, ${update}`);
 
-    res.json({ data: { updatedProduct } });
-  });
+  await Product.findOneAndUpdate(
+    { name }, update, {
+      new: true,
+    }, (err, updatedProduct) => {
+      if (err) console.log(err);
+
+      res.json({ data: { updatedProduct } });
+    },
+  );
 });
 
 app.get('/Users', async (req, res) => {
