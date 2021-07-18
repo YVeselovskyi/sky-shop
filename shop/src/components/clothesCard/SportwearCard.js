@@ -26,10 +26,10 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const clothesCard = (clothe) => {
+const SportwearCard = (clothe) => {
    const classes = useStyles();
    const { _id, name, description, category, price, imgUrl } = clothe;
-   if (category === 'Clothes') {
+   if (category === 'Sportwear') {
       return (
          <Grid item xs={12} sm={6} md={4} lg={3}>
             <Card className={classes.cardWidth}>
@@ -75,4 +75,4 @@ const clothesCard = (clothe) => {
    }
 };
 
-export default clothesCard;
+export default SportwearCard;

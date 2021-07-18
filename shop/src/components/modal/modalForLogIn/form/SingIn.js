@@ -25,7 +25,9 @@ function Copyright() {
       </Typography>
    );
 }
-
+const CheckForm = () => {
+   console.log('hi');
+};
 const useStyles = makeStyles((theme) => ({
    paper: {
       marginTop: theme.spacing(8),
@@ -87,11 +89,11 @@ export default function SignIn() {
                   label='Remember me'
                />
                <Button
-                  type='submit'
                   fullWidth
                   variant='contained'
                   color='primary'
                   className={classes.submit}
+                  onClick={CheckForm}
                >
                   Sign In
                </Button>

@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import { BrowserRouter, Route, Switch, NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
    button: {
@@ -22,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
       [theme.breakpoints.down('xs')]: {
          display: 'block',
+         marginRight: '2%',
+         marginLeft: '-2%',
       },
    },
 }));
@@ -53,10 +56,19 @@ export default function SelectForCategory() {
             <FormControl variant='outlined'>
                <InputLabel id='FilterBy'>Categoty</InputLabel>
                <Select label='Filter by'>
-                  <MenuItem value={1}>Clothing</MenuItem>
-                  <MenuItem value={2}>Shoes</MenuItem>
-                  <MenuItem value={3}>Accessories</MenuItem>
-                  <MenuItem value={4}>Sportwear</MenuItem>
+                  <NavLink to={`/clothing`} value={1}>
+                     Clothing
+                  </NavLink>
+                  <NavLink to={`/shoes`} value={2}>
+                     Shoes
+                  </NavLink>
+                  <NavLink to={`/accessories`} value={3}>
+                     Accessories
+                  </NavLink>
+
+                  <NavLink to={`/sportwear`} value={4}>
+                     Sportwear
+                  </NavLink>
                </Select>
             </FormControl>
          </FormControl>

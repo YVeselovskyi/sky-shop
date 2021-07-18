@@ -16,6 +16,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import StyledBadge from '@material-ui/core/Badge';
 import ModalFormForBusket from '../modal/ModalForBusket/ModalForBusket';
+import SelectForCategory from '../Aside/SelectForCategory';
 
 const useStyles = makeStyles((theme) => ({
    formControl: {
@@ -49,6 +50,11 @@ const useStyles = makeStyles((theme) => ({
    cartPrice: {
       flexGrow: 1,
    },
+   mobileNav: {
+      [theme.breakpoints.up('sm')]: {
+         display: 'none',
+      },
+   },
 }));
 
 function sort({
@@ -68,6 +74,9 @@ function sort({
 
    return (
       <>
+         <Grid item xs={12} className={classes.mobileNav}>
+            <SelectForCategory />
+         </Grid>
          <Grid item xs={12} sm={12} md={4}>
             <Paper component='form' className={classes.search} elevation={3}>
                <InputBase
@@ -125,7 +134,6 @@ function sort({
                </FormControl>
             </Paper>
          </Grid>
-
          <Grid item xs={12} sm={6} md={4}>
             <ModalFormForBusket totalPrice={totalPrice} count={count} />
          </Grid>
