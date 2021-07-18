@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-import { BrowserRouter, Route, Switch, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
    button: {
@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
          marginRight: '2%',
          marginLeft: '-2%',
       },
+   },
+   link: {
+      width: '100%',
    },
 }));
 const categoryArr = ['Clothing', 'Shoes', 'Accessories', 'Sportwear'];
@@ -56,19 +59,26 @@ export default function SelectForCategory() {
             <FormControl variant='outlined'>
                <InputLabel id='FilterBy'>Categoty</InputLabel>
                <Select label='Filter by'>
-                  <NavLink to={`/clothing`} value={1}>
-                     Clothing
-                  </NavLink>
-                  <NavLink to={`/shoes`} value={2}>
-                     Shoes
-                  </NavLink>
-                  <NavLink to={`/accessories`} value={3}>
-                     Accessories
-                  </NavLink>
-
-                  <NavLink to={`/sportwear`} value={4}>
-                     Sportwear
-                  </NavLink>
+                  <MenuItem value={1}>
+                     <Link to={`/clothing`} className={classes.link}>
+                        Clothing
+                     </Link>
+                  </MenuItem>
+                  <MenuItem value={2}>
+                     <Link to={`/shoes`} className={classes.link}>
+                        Shoes
+                     </Link>
+                  </MenuItem>
+                  <MenuItem value={3}>
+                     <Link to={`/accessories`} className={classes.link}>
+                        Accessories
+                     </Link>
+                  </MenuItem>
+                  <MenuItem value={4}>
+                     <Link to={`/sportwear`} className={classes.link}>
+                        Sportwear
+                     </Link>
+                  </MenuItem>
                </Select>
             </FormControl>
          </FormControl>

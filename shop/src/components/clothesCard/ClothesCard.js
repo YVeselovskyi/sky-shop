@@ -49,7 +49,7 @@ const clothesCard = (clothe) => {
                         color='textSecondary'
                         component='p'
                      >
-                        {description}
+                        {description.split('-').join(' ')}
                      </Typography>
                   </CardContent>
                </CardActionArea>
