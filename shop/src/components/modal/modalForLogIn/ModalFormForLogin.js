@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-export default function ModalFormForLogin() {
+export default function ModalFormForLogin(props) {
    const classes = useStyles();
    // getModalStyle is not a pure function, we roll the style only on the first render
    const [modalStyle] = React.useState(getModalStyle);
@@ -51,7 +51,7 @@ export default function ModalFormForLogin() {
 
    const body = (
       <div style={modalStyle} className={classes.paper}>
-         <SignIn />
+         <SignIn login={props.login} />
       </div>
    );
 

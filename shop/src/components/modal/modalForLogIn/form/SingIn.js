@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useState } from 'react';
 
 function Copyright() {
    return (
@@ -25,9 +26,7 @@ function Copyright() {
       </Typography>
    );
 }
-const CheckForm = () => {
-   console.log('hi');
-};
+
 const useStyles = makeStyles((theme) => ({
    paper: {
       marginTop: theme.spacing(8),
@@ -48,8 +47,22 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
+   const [isValid, setIsValid] = useState(true);
+   let login = '';
+   let password = '';
    const classes = useStyles();
+   const CheckForm = () => {
+      login.toLowerCase() === 'user' && password.toLowerCase() === 'user'
+         ? (props.login(), setIsValid(true))
+         : setIsValid(false);
+   };
+   const LoginValue = (e) => {
+      login = e.target.value;
+   };
+   const PasswordValue = (e) => {
+      password = e.target.value;
+   };
 
    return (
       <Container component='main' maxWidth='xs'>
@@ -63,6 +76,7 @@ export default function SignIn() {
             </Typography>
             <form className={classes.form} noValidate>
                <TextField
+                  onChange={LoginValue}
                   variant='outlined'
                   margin='normal'
                   required
@@ -74,6 +88,7 @@ export default function SignIn() {
                   autoFocus
                />
                <TextField
+                  onChange={PasswordValue}
                   variant='outlined'
                   margin='normal'
                   required
@@ -84,6 +99,13 @@ export default function SignIn() {
                   id='password'
                   autoComplete='current-password'
                />
+               {isValid ? (
+                  <></>
+               ) : (
+                  <Typography variant='body2' color='secondary' align='center'>
+                     {'Please enter correct data!'}
+                  </Typography>
+               )}
                <FormControlLabel
                   control={<Checkbox value='remember' color='primary' />}
                   label='Remember me'
