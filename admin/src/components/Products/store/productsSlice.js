@@ -1,9 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+const PRODUCTS_URL = 'https://infinite-bayou-82737.herokuapp.com/products';
+
+export const getProducts = createAsyncThunk(
+  'products/getProducts',
+  // eslint-disable-next-line no-unused-vars
+  async (userId, thunkAPI) => {
+    const response = await fetch(PRODUCTS_URL);
+    // eslint-disable-next-line no-return-await
+    return await response.json();
+  },
+);
 
 const productsSlice = createSlice({
   name: 'products',
   initialState: {
-    list: [
+    error: null,
+    isLoading: false,
+    list: [],
+    list1: [
       {
         id: 1, name: 'Pants', description: 'Shtany za 40 griven', category: 'Clothes', price: 40,
       },
@@ -44,10 +59,31 @@ const productsSlice = createSlice({
     },
     editProduct: (state, action) => {
       // eslint-disable-next-line eqeqeq
-      const index = state.list.findIndex((item) => item.id == action.payload.id);
+      const index = state.list.findIndex((item) => item.id === action.payload.id);
       // eslint-disable-next-line no-param-reassign
       state.list[index] = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    // eslint-disable-next-line no-unused-vars
+    builder
+    // eslint-disable-next-line no-unused-vars
+      .addCase(getProducts.pending, (state, action) => {
+        // eslint-disable-next-line no-param-reassign
+        state.isLoading = true;
+      })
+      .addCase(getProducts.rejected, (state, action) => {
+        // eslint-disable-next-line no-param-reassign
+        state.isLoading = false;
+        // eslint-disable-next-line no-param-reassign
+        state.error = action.payload;
+      })
+      .addCase(getProducts.fulfilled, (state, action) => {
+        // eslint-disable-next-line no-param-reassign
+        state.isLoading = false;
+        // eslint-disable-next-line no-param-reassign,no-underscore-dangle,no-return-assign
+        state.list = action.payload.products;
+      });
   },
 });
 

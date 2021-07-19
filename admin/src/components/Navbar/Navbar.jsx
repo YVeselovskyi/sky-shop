@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import Media from 'react-media';
 import PropTypes from 'prop-types';
@@ -6,9 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-// eslint-disable-next-line import/no-cycle
 import { Products } from '../Products/Products';
-// eslint-disable-next-line import/no-cycle
 import { Users } from '../Users/Users';
 
 function TabPanel(props) {
@@ -59,6 +56,7 @@ const Nav = (props) => {
 
     <div className={classes.root}>
       <Tabs
+          /* eslint-disable-next-line react/destructuring-assignment */
         orientation={props.tabsVariant}
         variant="standard"
         value={value}

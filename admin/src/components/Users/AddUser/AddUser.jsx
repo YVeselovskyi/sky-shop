@@ -9,8 +9,8 @@ import {
   FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
 } from '@material-ui/core';
 import { GridAddIcon } from '@material-ui/data-grid';
-import { useDispatch, useSelector } from 'react-redux';
-import { addUser } from '../store/usersSlice';
+import { useDispatch } from 'react-redux';
+import { addUser, getUsers } from '../store/usersSlice';
 
 const AddUserModal = () => {
   // eslint-disable-next-line react/destructuring-assignment
@@ -20,7 +20,6 @@ const AddUserModal = () => {
   const usernameRef = React.useRef('');
   const ageRef = React.useRef('');
   const dispatch = useDispatch();
-  const usersList = useSelector((state) => state.users.list);
 
   const handleRadioChange = (event) => {
     setGenderValue(event.target.value);
@@ -30,20 +29,22 @@ const AddUserModal = () => {
     setOpen(false);
   };
 
-  const handleSave = () => {
+  async function handleAdd() {
     const user = {
-      id: usersList[usersList.length - 1].id + 1,
       email: emailRef.current.value,
       username: usernameRef.current.value,
-      age: ageRef.current.value,
+      age: +ageRef.current.value,
       gender: genderValue,
     };
-    dispatch(addUser(user));
+    console.log(JSON.stringify(user));
+    await dispatch(addUser(user));
+    await dispatch(getUsers());
     handleClose();
-  };
+  }
 
   const handleOpen = () => {
     setOpen(true);
+    // dispatch(getUsers());
   };
 
   return (
@@ -93,8 +94,8 @@ const AddUserModal = () => {
           <FormControl component="fieldset">
             <FormLabel component="legend">Gender</FormLabel>
             <RadioGroup aria-label="gender" name="gender" onChange={handleRadioChange}>
-              <FormControlLabel value="M" control={<Radio />} label="Male" />
-              <FormControlLabel value="F" control={<Radio />} label="Female" />
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel value="female" control={<Radio />} label="Female" />
             </RadioGroup>
           </FormControl>
         </DialogContent>
@@ -102,7 +103,7 @@ const AddUserModal = () => {
           <Button onClick={handleClose} color="primary" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleSave} color="primary" variant="contained">
+          <Button onClick={handleAdd} color="primary" variant="contained">
             ADD
           </Button>
         </DialogActions>

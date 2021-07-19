@@ -1,60 +1,102 @@
-import { createSlice } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+const USERS_URL = 'https://infinite-bayou-82737.herokuapp.com/users';
+const ADD_USER_URL = 'https://infinite-bayou-82737.herokuapp.com/admin/addUser';
+const EDIT_USER_URL = 'https://infinite-bayou-82737.herokuapp.com/admin/editUser';
+
+export const getUsers = createAsyncThunk(
+  'users/getUsers',
+  async () => {
+    const response = await fetch(USERS_URL);
+    // eslint-disable-next-line no-return-await
+    return await response.json();
+  },
+);
+
+export const addUser = createAsyncThunk(
+  'users/addUser',
+  // eslint-disable-next-line no-unused-vars
+  async (user) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        // eslint-disable-next-line quote-props
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    };
+    await fetch(ADD_USER_URL, requestOptions);
+  },
+);
+
+export const editUserById = createAsyncThunk(
+  'users/editUserById',
+  // eslint-disable-next-line no-unused-vars
+  async ({ _id, editedUser }) => {
+    const request = { _id, update: editedUser };
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        // eslint-disable-next-line quote-props
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    };
+    await fetch(EDIT_USER_URL, requestOptions);
+  },
+);
+
+export const deleteUser = createAsyncThunk(
+  'users/deleteUserById',
+  async (userId) => {
+    await fetch(`${USERS_URL}/${userId}`, { method: 'DELETE' });
+  },
+);
 
 const usersSlice = createSlice({
   name: 'users',
   initialState: {
-    list: [{
-      id: 1, email: 'nnaqwe@gmail.com', username: 'nazarii', age: 19, gender: 'M',
-    },
-    {
-      id: 2, email: 'anna8855@gmail.com', username: 'annet_115', age: 19, gender: 'F',
-    },
-    {
-      id: 3, email: 'vrvr99@gmail.com', username: 'varvara99', age: 22, gender: 'F',
-    },
-    {
-      id: 4, email: 'freewqq12@gmail.com', username: 'user789', age: 15, gender: 'M',
-    },
-    {
-      id: 5, email: 'random@gmail.com', username: 'rndmguy', age: 18, gender: 'M',
-    },
-    {
-      id: 6, email: 'notrandom@gmail.com', username: 'ntrndmgirl', age: 35, gender: 'F',
-    },
-    {
-      id: 7, email: 'pochta45@gmail.com', username: 'maxmax', age: 28, gender: 'M',
-    },
-    {
-      id: 8, email: 'nevermindk@gmail.com', username: 'aleX', age: 17, gender: 'M',
-    },
-    {
-      id: 9, email: 'mm887@gmail.com', username: 'marina887', age: 25, gender: 'F',
-    },
-    {
-      id: 10, email: 'ddkaba11@gmail.com', username: 'kabargin', age: 55, gender: 'M',
-    },
-    {
-      id: 11, email: 'vasek@mail.ru', username: 'sswwqqaa', age: 12, gender: 'F',
-    }],
+    error: '',
+    isLoading: false,
+    list: [],
   },
-  reducers: {
-    addUser: (state, action) => {
-      // eslint-disable-next-line no-param-reassign
-      state.list = [...state.list, action.payload];
-    },
-    deleteUser: (state, action) => {
-      // eslint-disable-next-line no-param-reassign
-      state.list = state.list.filter((item) => item.id !== action.payload);
-    },
-    editUser: (state, action) => {
-      // eslint-disable-next-line eqeqeq
-      const index = state.list.findIndex((item) => item.id == action.payload.id);
-      // eslint-disable-next-line no-param-reassign
-      state.list[index] = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUsers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.list = action.payload.users;
+      })
+      .addCase(addUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(addUser.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(editUserById.pending, ((state) => {
+        state.isLoadind = true;
+      }))
+      .addCase(editUserById.rejected, ((state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      }))
+      .addCase(editUserById.fulfilled, ((state) => {
+        state.isLoading = false;
+      }));
   },
 });
-
-export const { addUser, deleteUser, editUser } = usersSlice.actions;
 
 export const usersReducer = usersSlice.reducer;

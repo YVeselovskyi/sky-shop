@@ -10,10 +10,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import {
   FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
 } from '@material-ui/core';
-// eslint-disable-next-line import/no-cycle
 import { useDispatch } from 'react-redux';
-// eslint-disable-next-line import/named
-import { editUser } from '../../Users/store/usersSlice';
+import { editUserById, getUsers } from '../../Users/store/usersSlice';
 import { editProduct } from '../../Products/store/productsSlice';
 
 const EditModalUser = (props) => {
@@ -21,9 +19,7 @@ const EditModalUser = (props) => {
   const { user } = props;
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-  // eslint-disable-next-line no-unused-vars
   const [genderValue, setGenderValue] = React.useState(user.gender);
-  // eslint-disable-next-line no-undef,no-unused-vars
   const emailRef = useRef();
   const usernameRef = useRef();
   const ageRef = useRef();
@@ -36,17 +32,18 @@ const EditModalUser = (props) => {
     setOpen(false);
   };
 
-  const handleSave = () => {
+  async function handleSave() {
     const editedUser = {
-      id: user.id,
       email: emailRef.current.value,
       username: usernameRef.current.value,
-      age: ageRef.current.value,
+      age: +ageRef.current.value,
       gender: genderValue,
     };
-    dispatch(editUser(editedUser));
+    // eslint-disable-next-line no-underscore-dangle,
+    await dispatch(editUserById({ _id: user._id, editedUser }));
+    await dispatch(getUsers());
     handleClose();
-  };
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -99,8 +96,8 @@ const EditModalUser = (props) => {
           <FormControl component="fieldset">
             <FormLabel component="legend">Gender</FormLabel>
             <RadioGroup aria-label="gender" name="gender" defaultValue={genderValue} onChange={handleRadioChange}>
-              <FormControlLabel value="M" control={<Radio />} label="Male" />
-              <FormControlLabel value="F" control={<Radio />} label="Female" />
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel value="female" control={<Radio />} label="Female" />
             </RadioGroup>
           </FormControl>
         </DialogContent>

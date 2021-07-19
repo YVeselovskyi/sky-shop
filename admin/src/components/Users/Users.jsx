@@ -5,21 +5,29 @@ import {
   GridToolbarFilterButton,
   GridCellParams,
 } from '@material-ui/data-grid';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import s from './Users.module.css';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
-// eslint-disable-next-line import/no-cycle
 import { EditModalUser } from '../AdminPage/EditModal/EditModal';
 import { AddUserModal } from './AddUser/AddUser';
-// eslint-disable-next-line import/named
-import { deleteUser } from './store/usersSlice';
+import { deleteUser, getUsers } from './store/usersSlice';
 
 const Users = (props) => {
-  // eslint-disable-next-line react/destructuring-assignment
   const users = useSelector((state) => state.users.list);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      dispatch(getUsers());
+    }
+    // eslint-disable-next-line no-return-assign
+    return () => mounted = false;
+  }, [dispatch]);
+
   const fields = [
     {
-      field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center',
+      field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center', hide: true,
     },
     {
       field: 'email',
@@ -57,6 +65,7 @@ const Users = (props) => {
       sortable: false,
 
       renderCell: (params: GridCellParams) => {
+        // eslint-disable-next-line no-underscore-dangle
         const userIndex = users.findIndex((obj) => obj.id === params.id);
         return <EditModalUser user={users[userIndex]} />;
       },
@@ -68,7 +77,8 @@ const Users = (props) => {
       sortable: false,
       // eslint-disable-next-line no-unused-vars
       renderCell: (params: GridCellParams) => {
-        const userIndex = users.findIndex((obj) => obj.id === params.id);
+        // eslint-disable-next-line no-underscore-dangle
+        const userIndex = users.findIndex((obj) => obj._id === params.id);
         const user = users[userIndex];
 
         return <DeleteModal item={user} onDelete={deleteUser} />;

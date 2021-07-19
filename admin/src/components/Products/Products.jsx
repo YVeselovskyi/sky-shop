@@ -3,21 +3,27 @@ import * as React from 'react';
 import {
   DataGrid, GridToolbarContainer, GridToolbarFilterButton, GridCellParams,
 } from '@material-ui/data-grid';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import s from './Products.module.css';
-// eslint-disable-next-line import/no-cycle
 import { EditModalProduct } from '../AdminPage/EditModal/EditModal';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
-// eslint-disable-next-line import/named
 import { AddProduct } from './AddProduct';
-import { deleteProduct } from './store/productsSlice';
+import { deleteProduct, getProducts } from './store/productsSlice';
 
 const Products = () => {
   // eslint-disable-next-line react/destructuring-assignment
   const goods = useSelector((state) => state.products.list);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) dispatch(getProducts());
+    // eslint-disable-next-line no-return-assign
+    return () => mounted = false;
+  }, [dispatch]);
   const fields = [
     {
-      field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center',
+      field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center', hide: true,
     },
     {
       field: 'name',
