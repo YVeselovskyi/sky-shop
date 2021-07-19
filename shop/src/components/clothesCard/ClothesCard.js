@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'space-between',
       padding: theme.spacing(3),
    },
+   description: {
+      height: '1.5em',
+      overflow: 'hidden',
+   },
 }));
 
 const clothesCard = (clothe) => {
@@ -48,6 +52,7 @@ const clothesCard = (clothe) => {
                         variant='body2'
                         color='textSecondary'
                         component='p'
+                        className={classes.description}
                      >
                         {description.split('-').join(' ')}
                      </Typography>
