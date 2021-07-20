@@ -1,14 +1,56 @@
+/* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const PRODUCTS_URL = 'https://infinite-bayou-82737.herokuapp.com/products';
+const ADD_PRODUCT_URL = 'https://infinite-bayou-82737.herokuapp.com/admin/addProduct';
+const EDIT_PRODUCT_URL = 'https://infinite-bayou-82737.herokuapp.com/admin/editProduct';
 
 export const getProducts = createAsyncThunk(
   'products/getProducts',
-  // eslint-disable-next-line no-unused-vars
-  async (userId, thunkAPI) => {
+  async () => {
     const response = await fetch(PRODUCTS_URL);
-    // eslint-disable-next-line no-return-await
-    return await response.json();
+    const json = await response.json();
+    return json;
+  },
+);
+
+export const addProduct = createAsyncThunk(
+  'products/addProduct',
+  async (product) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        // eslint-disable-next-line quote-props
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(product),
+    };
+    await fetch(ADD_PRODUCT_URL, requestOptions);
+  },
+);
+
+export const editProductById = createAsyncThunk(
+  'products/editProductById',
+  async ({ _id, editedProduct }) => {
+    const request = { _id, update: editedProduct };
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        // eslint-disable-next-line quote-props
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    };
+    await fetch(EDIT_PRODUCT_URL, requestOptions);
+  },
+);
+
+export const deleteProduct = createAsyncThunk(
+  'products/deleteProductById',
+  async (userId) => {
+    await fetch(`${EDIT_PRODUCT_URL}/${userId}`, { method: 'DELETE' });
   },
 );
 
@@ -18,75 +60,41 @@ const productsSlice = createSlice({
     error: null,
     isLoading: false,
     list: [],
-    list1: [
-      {
-        id: 1, name: 'Pants', description: 'Shtany za 40 griven', category: 'Clothes', price: 40,
-      },
-      {
-        id: 2, name: 'T-shirt', description: 'Amazing ARMYANE futbolka', category: 'Clothes', price: 20,
-      },
-      {
-        id: 3, name: 'Jacket', description: 'Pidzhak', category: 'Clothes', price: 33,
-      },
-      {
-        id: 4, name: 'Socks', description: 'GUCCI Socks', category: 'Clothes', price: 5,
-      },
-      {
-        id: 5, name: 'Lamborghini', description: 'Sport car', category: 'Car', price: 150000,
-      },
-      {
-        id: 6, name: 'Lexus', description: 'Premium car', category: 'Car', price: 20,
-      },
-      {
-        id: 7, name: 'BMW', description: 'Takih bol`she ne delayut', category: 'Car', price: 1200,
-      },
-      {
-        id: 8, name: 'Xiaomi MI 220 Ultra', description: 'Smartphone', category: 'Technologies', price: 20,
-      },
-      {
-        id: 9, name: 'OppO', description: 'Amazing smartphone', category: 'Clothes', price: 20,
-      },
-    ],
-  },
-  reducers: {
-    addProduct: (state, action) => {
-      // eslint-disable-next-line no-param-reassign
-      state.list = [...state.list, action.payload];
-    },
-    deleteProduct: (state, action) => {
-      // eslint-disable-next-line no-param-reassign
-      state.list = state.list.filter((item) => item.id !== action.payload);
-    },
-    editProduct: (state, action) => {
-      // eslint-disable-next-line eqeqeq
-      const index = state.list.findIndex((item) => item.id === action.payload.id);
-      // eslint-disable-next-line no-param-reassign
-      state.list[index] = action.payload;
-    },
   },
   extraReducers: (builder) => {
-    // eslint-disable-next-line no-unused-vars
     builder
-    // eslint-disable-next-line no-unused-vars
-      .addCase(getProducts.pending, (state, action) => {
-        // eslint-disable-next-line no-param-reassign
+      .addCase(getProducts.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getProducts.rejected, (state, action) => {
-        // eslint-disable-next-line no-param-reassign
         state.isLoading = false;
-        // eslint-disable-next-line no-param-reassign
         state.error = action.payload;
       })
       .addCase(getProducts.fulfilled, (state, action) => {
-        // eslint-disable-next-line no-param-reassign
         state.isLoading = false;
-        // eslint-disable-next-line no-param-reassign,no-underscore-dangle,no-return-assign
         state.list = action.payload.products;
-      });
+      })
+      .addCase(addProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(addProduct.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(editProductById.pending, ((state) => {
+        state.isLoadind = true;
+      }))
+      .addCase(editProductById.rejected, ((state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      }))
+      .addCase(editProductById.fulfilled, ((state) => {
+        state.isLoading = false;
+      }));
   },
 });
-
-export const { addProduct, deleteProduct, editProduct } = productsSlice.actions;
 
 export const productsReducer = productsSlice.reducer;

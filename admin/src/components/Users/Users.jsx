@@ -7,7 +7,7 @@ import {
 } from '@material-ui/data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import s from './Users.module.css';
+import classes from './Users.module.css';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
 import { EditModalUser } from '../AdminPage/EditModal/EditModal';
 import { AddUserModal } from './AddUser/AddUser';
@@ -65,7 +65,6 @@ const Users = (props) => {
       sortable: false,
 
       renderCell: (params: GridCellParams) => {
-        // eslint-disable-next-line no-underscore-dangle
         const userIndex = users.findIndex((obj) => obj.id === params.id);
         return <EditModalUser user={users[userIndex]} />;
       },
@@ -75,10 +74,8 @@ const Users = (props) => {
       headerName: '      ',
       width: 120,
       sortable: false,
-      // eslint-disable-next-line no-unused-vars
       renderCell: (params: GridCellParams) => {
-        // eslint-disable-next-line no-underscore-dangle
-        const userIndex = users.findIndex((obj) => obj._id === params.id);
+        const userIndex = users.findIndex((obj) => obj.id === params.id);
         const user = users[userIndex];
 
         return <DeleteModal item={user} onDelete={deleteUser} />;
@@ -87,7 +84,7 @@ const Users = (props) => {
   ];
 
   return (
-    <div className={s.table}>
+    <div className={classes.table}>
       <DataGrid
         rows={users}
         columns={fields}

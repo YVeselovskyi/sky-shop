@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { editUserById, getUsers } from '../../Users/store/usersSlice';
-import { editProduct } from '../../Products/store/productsSlice';
+import { editProductById, getProducts } from '../../Products/store/productsSlice';
 
 const EditModalUser = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
@@ -121,6 +121,7 @@ const EditModalProduct = (props) => {
   const descriptionRef = useRef();
   const categoryRef = useRef();
   const priceRef = useRef();
+  const imgUrlRef = useRef();
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -132,17 +133,19 @@ const EditModalProduct = (props) => {
     setOpen(false);
   };
 
-  const handleSave = () => {
+  async function handleSave() {
     const editedProduct = {
-      id: product.id,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
       category: categoryRef.current.value,
       price: priceRef.current.value,
+      imgUrl: imgUrlRef.current.value,
     };
-    dispatch(editProduct(editedProduct));
+    // eslint-disable-next-line no-underscore-dangle
+    await dispatch(editProductById({ _id: product._id, editedProduct }));
+    await dispatch(getProducts());
     handleClose();
-  };
+  }
 
   return (
     <div>
@@ -199,6 +202,17 @@ const EditModalProduct = (props) => {
             fullWidth
             defaultValue={product.category}
             inputRef={categoryRef}
+            variant="outlined"
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="imgURL"
+            label="ImageURL"
+            type="string"
+            fullWidth
+            defaultValue={product.imgUrl}
+            inputRef={imgUrlRef}
             variant="outlined"
           />
         </DialogContent>

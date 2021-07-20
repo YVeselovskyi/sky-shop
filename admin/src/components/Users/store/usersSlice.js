@@ -9,14 +9,13 @@ export const getUsers = createAsyncThunk(
   'users/getUsers',
   async () => {
     const response = await fetch(USERS_URL);
-    // eslint-disable-next-line no-return-await
-    return await response.json();
+    const json = await response.json();
+    return json;
   },
 );
 
 export const addUser = createAsyncThunk(
   'users/addUser',
-  // eslint-disable-next-line no-unused-vars
   async (user) => {
     const requestOptions = {
       method: 'POST',
@@ -33,7 +32,6 @@ export const addUser = createAsyncThunk(
 
 export const editUserById = createAsyncThunk(
   'users/editUserById',
-  // eslint-disable-next-line no-unused-vars
   async ({ _id, editedUser }) => {
     const request = { _id, update: editedUser };
     const requestOptions = {

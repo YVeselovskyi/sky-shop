@@ -36,7 +36,6 @@ const AddUserModal = () => {
       age: +ageRef.current.value,
       gender: genderValue,
     };
-    console.log(JSON.stringify(user));
     await dispatch(addUser(user));
     await dispatch(getUsers());
     handleClose();
@@ -44,7 +43,6 @@ const AddUserModal = () => {
 
   const handleOpen = () => {
     setOpen(true);
-    // dispatch(getUsers());
   };
 
   return (

@@ -6,18 +6,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import { GridAddIcon } from '@material-ui/data-grid';
-import { useDispatch, useSelector } from 'react-redux';
-import { addProduct } from './store/productsSlice';
+import { useDispatch } from 'react-redux';
+import { addProduct, getProducts } from './store/productsSlice';
 
 const AddProduct = () => {
-  // eslint-disable-next-line react/destructuring-assignment
   const nameRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
   const priceRef = useRef();
+  const imgUrlRef = useRef();
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
-  const productsList = useSelector((state) => state.products.list);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,18 +26,19 @@ const AddProduct = () => {
     setOpen(false);
   };
 
-  const handleSave = () => {
+  async function handleAdd() {
     const product = {
-      id: productsList[productsList.length - 1].id + 1,
       name: nameRef.current.value,
       description: descriptionRef.current.value,
+      price: +priceRef.current.value,
       category: categoryRef.current.value,
-      price: priceRef.current.value,
+      imgUrl: imgUrlRef.current.value,
     };
-
-    dispatch(addProduct(product));
+    // console.log(JSON.stringify(product));
+    await dispatch(addProduct(product));
+    await dispatch(getProducts());
     handleClose();
-  };
+  }
 
   return (
     <div>
@@ -60,7 +60,6 @@ const AddProduct = () => {
             type="name"
             fullWidth
             inputRef={nameRef}
-            placeholder="Name"
             variant="outlined"
           />
           <TextField
@@ -71,7 +70,6 @@ const AddProduct = () => {
             type="string"
             fullWidth
             inputRef={descriptionRef}
-            placeholder="Description"
             variant="outlined"
           />
           <TextField
@@ -82,7 +80,6 @@ const AddProduct = () => {
             type="number"
             fullWidth
             inputRef={priceRef}
-            placeholder="Price"
             variant="outlined"
           />
           <TextField
@@ -93,7 +90,16 @@ const AddProduct = () => {
             type="string"
             fullWidth
             inputRef={categoryRef}
-            placeholder="Category"
+            variant="outlined"
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="imgUrl"
+            label="ImageURL"
+            type="string"
+            fullWidth
+            inputRef={imgUrlRef}
             variant="outlined"
           />
         </DialogContent>
@@ -101,7 +107,7 @@ const AddProduct = () => {
           <Button onClick={handleClose} color="primary" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleSave} color="primary" variant="contained">
+          <Button onClick={handleAdd} color="primary" variant="contained">
             Add
           </Button>
         </DialogActions>

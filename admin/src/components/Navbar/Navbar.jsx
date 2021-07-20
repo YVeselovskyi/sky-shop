@@ -44,6 +44,32 @@ function a11yProps(index) {
 }
 let useStyles;
 
+const desktopStyles = makeStyles((theme) => ({
+  root: {
+    display: 'grid',
+    gridTemplateRows: '1fr 1fr',
+    gridTemplateColumns: '1fr 7fr',
+    backgroundColor: theme.palette.background.paper,
+    height: 224,
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
+const mobileStyles = makeStyles((theme) => ({
+  root: {
+    display: 'grid',
+    gridTemplateRows: '1fr 1fr',
+    gridTemplateColumns: '1fr',
+    backgroundColor: theme.palette.background.paper,
+    height: 224,
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
 const Nav = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -84,30 +110,7 @@ const Navbar = () => {
       <Media query="(max-width: 990px)">
         {(matches) => {
           tabsVariant = (matches ? ('horizontal') : ('vertical'));
-          useStyles = (matches) ? makeStyles((theme) => ({
-            root: {
-              display: 'grid',
-              gridTemplateRows: '1fr 1fr',
-              gridTemplateColumns: '1fr',
-              backgroundColor: theme.palette.background.paper,
-              height: 224,
-            },
-            tabs: {
-              borderRight: `1px solid ${theme.palette.divider}`,
-            },
-          }))
-            : makeStyles((theme) => ({
-              root: {
-                display: 'grid',
-                gridTemplateRows: '1fr 1fr',
-                gridTemplateColumns: '1fr 7fr',
-                backgroundColor: theme.palette.background.paper,
-                height: 224,
-              },
-              tabs: {
-                borderRight: `1px solid ${theme.palette.divider}`,
-              },
-            }));
+          useStyles = (matches) ? mobileStyles : desktopStyles;
           return (
             <Nav
               tabsVariant={tabsVariant}

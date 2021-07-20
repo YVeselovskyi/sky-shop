@@ -5,14 +5,13 @@ import {
 } from '@material-ui/data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import s from './Products.module.css';
+import classes from './Products.module.css';
 import { EditModalProduct } from '../AdminPage/EditModal/EditModal';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
 import { AddProduct } from './AddProduct';
 import { deleteProduct, getProducts } from './store/productsSlice';
 
 const Products = () => {
-  // eslint-disable-next-line react/destructuring-assignment
   const goods = useSelector((state) => state.products.list);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -71,16 +70,14 @@ const Products = () => {
       headerName: '      ',
       width: 120,
       sortable: false,
-      // eslint-disable-next-line no-unused-vars
       renderCell: (params: GridCellParams) => {
         const productIndex = goods.findIndex((obj) => obj.id === params.id);
         const product = goods[productIndex];
-        // eslint-disable-next-line max-len
         return <DeleteModal item={product} onDelete={deleteProduct} />;
       },
     }];
   return (
-    <div className={s.table}>
+    <div className={classes.table}>
       <DataGrid
         rows={goods}
         columns={fields}
