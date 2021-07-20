@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
@@ -12,11 +12,11 @@ import { editProductById, getProducts } from '../../Products/store/productsSlice
 export const EditProductModal = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
   const { product } = props;
-  const nameRef = useRef();
-  const descriptionRef = useRef();
-  const categoryRef = useRef();
-  const priceRef = useRef();
-  const imgUrlRef = useRef();
+  const [name, setName] = useState(product.name);
+  const [description, setDescription] = useState(product.description);
+  const [category, setCategory] = useState(product.category);
+  const [price, setPrice] = useState(product.price);
+  const [imgUrl, setImgUrl] = useState(product.imgUrl);
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -30,11 +30,11 @@ export const EditProductModal = (props) => {
 
   async function handleSave() {
     const editedProduct = {
-      name: nameRef.current.value,
-      description: descriptionRef.current.value,
-      category: categoryRef.current.value,
-      price: priceRef.current.value,
-      imgUrl: imgUrlRef.current.value,
+      name,
+      description,
+      category,
+      price,
+      imgUrl,
     };
     // eslint-disable-next-line no-underscore-dangle
     await dispatch(editProductById({ _id: product._id, editedProduct }));
@@ -63,7 +63,7 @@ export const EditProductModal = (props) => {
             type="name"
             fullWidth
             defaultValue={product.name}
-            inputRef={nameRef}
+            onChange={(e) => setName(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -74,7 +74,7 @@ export const EditProductModal = (props) => {
             type="string"
             fullWidth
             defaultValue={product.description}
-            inputRef={descriptionRef}
+            onChange={(e) => setDescription(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -85,7 +85,7 @@ export const EditProductModal = (props) => {
             type="number"
             fullWidth
             defaultValue={product.price}
-            inputRef={priceRef}
+            onChange={(e) => setPrice(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -96,7 +96,7 @@ export const EditProductModal = (props) => {
             type="string"
             fullWidth
             defaultValue={product.category}
-            inputRef={categoryRef}
+            onChange={(e) => setCategory(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -107,7 +107,7 @@ export const EditProductModal = (props) => {
             type="string"
             fullWidth
             defaultValue={product.imgUrl}
-            inputRef={imgUrlRef}
+            onChange={(e) => setImgUrl(e.target.value)}
             variant="outlined"
           />
         </DialogContent>

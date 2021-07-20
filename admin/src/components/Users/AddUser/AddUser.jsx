@@ -9,22 +9,17 @@ import {
   FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
 } from '@material-ui/core';
 import { GridAddIcon } from '@material-ui/data-grid';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addUser, getUsers } from '../store/usersSlice';
 
 const AddUserModal = () => {
   // eslint-disable-next-line react/destructuring-assignment
   const [open, setOpen] = React.useState(false);
-  const [genderValue, setGenderValue] = React.useState();
-  const isLoading = useSelector((state) => state.users.isLoading);
-  const emailRef = React.useRef('');
-  const usernameRef = React.useRef('');
-  const ageRef = React.useRef('');
+  const [email, setEmail] = React.useState('');
+  const [username, setUsername] = React.useState('');
+  const [age, setAge] = React.useState('');
+  const [gender, setGender] = React.useState('');
   const dispatch = useDispatch();
-
-  const handleRadioChange = (event) => {
-    setGenderValue(event.target.value);
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -32,10 +27,10 @@ const AddUserModal = () => {
 
   async function handleAdd() {
     const user = {
-      email: emailRef.current.value,
-      username: usernameRef.current.value,
-      age: +ageRef.current.value,
-      gender: genderValue,
+      email,
+      username,
+      age: +age,
+      gender,
     };
     await dispatch(addUser(user));
     await dispatch(getUsers());
@@ -63,7 +58,7 @@ const AddUserModal = () => {
             required="true"
             fullWidth
             placeholder="email"
-            inputRef={emailRef}
+            onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -75,7 +70,7 @@ const AddUserModal = () => {
             required="true"
             fullWidth
             placeholder="username"
-            inputRef={usernameRef}
+            onChange={(e) => setUsername(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -87,26 +82,29 @@ const AddUserModal = () => {
             required="true"
             fullWidth
             placeholder="Age"
-            inputRef={ageRef}
+            onChange={(e) => setAge(e.target.value)}
             variant="outlined"
           />
           <FormControl component="fieldset">
             <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup aria-label="gender" name="gender" onChange={handleRadioChange}>
+            <RadioGroup
+              aria-label="gender"
+              name="gender"
+              onChange={(e) => setGender(e.target.value)}
+            >
               <FormControlLabel value="male" control={<Radio />} label="Male" />
               <FormControlLabel value="female" control={<Radio />} label="Female" />
             </RadioGroup>
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="outlined" disabled={isLoading}>
+          <Button onClick={handleClose} color="primary" variant="outlined">
             Cancel
           </Button>
           <Button
             onClick={handleAdd}
             color="primary"
             variant="contained"
-            disabled={isLoading}
           >
             ADD
           </Button>

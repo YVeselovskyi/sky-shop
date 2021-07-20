@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import EditIcon from '@material-ui/icons/Edit';
@@ -7,7 +7,7 @@ import {
   FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
   Dialog, DialogActions, DialogContent, DialogTitle,
 } from '@material-ui/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { editUserById, getUsers } from '../../Users/store/usersSlice';
 
 export const EditUserModal = (props) => {
@@ -15,15 +15,10 @@ export const EditUserModal = (props) => {
   const { user } = props;
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-  const [genderValue, setGenderValue] = React.useState(user.gender);
-  const emailRef = useRef();
-  const usernameRef = useRef();
-  const ageRef = useRef();
-  const isLoading = useSelector((state) => state.users.isLoading);
-
-  const handleRadioChange = (event) => {
-    setGenderValue(event.target.value);
-  };
+  const [email, setEmail] = React.useState(user.email);
+  const [username, setUsername] = React.useState(user.username);
+  const [age, setAge] = React.useState(user.age);
+  const [gender, setGender] = React.useState(user.gender);
 
   const handleClose = () => {
     setOpen(false);
@@ -31,10 +26,10 @@ export const EditUserModal = (props) => {
 
   async function handleSave() {
     const editedUser = {
-      email: emailRef.current.value,
-      username: usernameRef.current.value,
-      age: +ageRef.current.value,
-      gender: genderValue,
+      email,
+      username,
+      age: +age,
+      gender,
     };
     // eslint-disable-next-line no-underscore-dangle,
     await dispatch(editUserById({ _id: user._id, editedUser }));
@@ -63,7 +58,7 @@ export const EditUserModal = (props) => {
             required="true"
             fullWidth
             defaultValue={user.email}
-            inputRef={emailRef}
+            onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -75,7 +70,7 @@ export const EditUserModal = (props) => {
             required="true"
             fullWidth
             defaultValue={user.username}
-            inputRef={usernameRef}
+            onChange={(e) => setUsername(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -87,19 +82,24 @@ export const EditUserModal = (props) => {
             required="true"
             fullWidth
             defaultValue={user.age}
-            inputRef={ageRef}
+            onChange={(e) => setAge(e.target.value)}
             variant="outlined"
           />
           <FormControl component="fieldset">
             <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup aria-label="gender" name="gender" defaultValue={genderValue} onChange={handleRadioChange}>
+            <RadioGroup
+              aria-label="gender"
+              name="gender"
+              defaultValue={gender}
+              onChange={(e) => setGender(e.target.value)}
+            >
               <FormControlLabel value="male" control={<Radio />} label="Male" />
               <FormControlLabel value="female" control={<Radio />} label="Female" />
             </RadioGroup>
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" variant="outlined" disabled={isLoading}>
+          <Button onClick={handleClose} color="primary" variant="outlined">
             Cancel
           </Button>
           <Button

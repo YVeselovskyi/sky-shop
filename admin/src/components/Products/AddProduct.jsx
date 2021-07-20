@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -11,11 +11,11 @@ import { useDispatch } from 'react-redux';
 import { addProduct, getProducts } from './store/productsSlice';
 
 const AddProduct = () => {
-  const nameRef = useRef();
-  const descriptionRef = useRef();
-  const categoryRef = useRef();
-  const priceRef = useRef();
-  const imgUrlRef = useRef();
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [price, setPrice] = useState('');
+  const [imgUrl, setImgUrl] = useState('');
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -29,11 +29,11 @@ const AddProduct = () => {
 
   async function handleAdd() {
     const product = {
-      name: nameRef.current.value,
-      description: descriptionRef.current.value,
-      price: +priceRef.current.value,
-      category: categoryRef.current.value,
-      imgUrl: imgUrlRef.current.value,
+      name,
+      description,
+      price,
+      category,
+      imgUrl,
     };
     // console.log(JSON.stringify(product));
     await dispatch(addProduct(product));
@@ -60,7 +60,7 @@ const AddProduct = () => {
             label="Name"
             type="name"
             fullWidth
-            inputRef={nameRef}
+            onChange={(e) => setName(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -70,7 +70,7 @@ const AddProduct = () => {
             label="Description"
             type="string"
             fullWidth
-            inputRef={descriptionRef}
+            onChange={(e) => setDescription(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -80,7 +80,7 @@ const AddProduct = () => {
             label="Price"
             type="number"
             fullWidth
-            inputRef={priceRef}
+            onChange={(e) => setPrice(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -90,7 +90,7 @@ const AddProduct = () => {
             label="Category"
             type="string"
             fullWidth
-            inputRef={categoryRef}
+            onChange={(e) => setCategory(e.target.value)}
             variant="outlined"
           />
           <TextField
@@ -100,7 +100,7 @@ const AddProduct = () => {
             label="ImageURL"
             type="string"
             fullWidth
-            inputRef={imgUrlRef}
+            onChange={(e) => setImgUrl(e.target.value)}
             variant="outlined"
           />
         </DialogContent>
