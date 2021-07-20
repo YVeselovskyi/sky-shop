@@ -56,7 +56,6 @@
     ]
   },
   "devDependencies": {
-    "@material-ui/styles": "^4.11.4",
     "eslint-config-airbnb": "^18.2.1",
     "prop-types": "^15.7.2"
   },
