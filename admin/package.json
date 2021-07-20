@@ -2,9 +2,6 @@
   "name": "ssp-try",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "14.17.3"
-  },
   "dependencies": {
     "@fontsource/roboto": "^4.4.5",
     "@material-ui/core": "latest",
@@ -59,6 +56,7 @@
     ]
   },
   "devDependencies": {
+    "@material-ui/styles": "^4.11.4",
     "eslint-config-airbnb": "^18.2.1",
     "prop-types": "^15.7.2"
   },

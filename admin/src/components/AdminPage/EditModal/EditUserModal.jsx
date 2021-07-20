@@ -1,26 +1,25 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
 import {
   FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
+  Dialog, DialogActions, DialogContent, DialogTitle,
 } from '@material-ui/core';
-import { GridAddIcon } from '@material-ui/data-grid';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser, getUsers } from '../store/usersSlice';
+import { editUserById, getUsers } from '../../Users/store/usersSlice';
 
-const AddUserModal = () => {
+export const EditUserModal = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
-  const [open, setOpen] = React.useState(false);
-  const [genderValue, setGenderValue] = React.useState();
-  const isLoading = useSelector((state) => state.users.isLoading);
-  const emailRef = React.useRef('');
-  const usernameRef = React.useRef('');
-  const ageRef = React.useRef('');
+  const { user } = props;
   const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
+  const [genderValue, setGenderValue] = React.useState(user.gender);
+  const emailRef = useRef();
+  const usernameRef = useRef();
+  const ageRef = useRef();
+  const isLoading = useSelector((state) => state.users.isLoading);
 
   const handleRadioChange = (event) => {
     setGenderValue(event.target.value);
@@ -30,29 +29,30 @@ const AddUserModal = () => {
     setOpen(false);
   };
 
-  async function handleAdd() {
-    const user = {
+  async function handleSave() {
+    const editedUser = {
       email: emailRef.current.value,
       username: usernameRef.current.value,
       age: +ageRef.current.value,
       gender: genderValue,
     };
-    await dispatch(addUser(user));
+    // eslint-disable-next-line no-underscore-dangle,
+    await dispatch(editUserById({ _id: user._id, editedUser }));
     await dispatch(getUsers());
     handleClose();
   }
 
-  const handleOpen = () => {
+  const handleClickOpen = () => {
     setOpen(true);
   };
 
   return (
     <div>
-      <Button color="primary" onClick={handleOpen} startIcon={<GridAddIcon />}>
-        Add
+      <Button variant="outlined" color="primary" onClick={handleClickOpen} startIcon={<EditIcon />}>
+        Edit
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add new user</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -62,7 +62,7 @@ const AddUserModal = () => {
             type="email"
             required="true"
             fullWidth
-            placeholder="email"
+            defaultValue={user.email}
             inputRef={emailRef}
             variant="outlined"
           />
@@ -74,7 +74,7 @@ const AddUserModal = () => {
             type="string"
             required="true"
             fullWidth
-            placeholder="username"
+            defaultValue={user.username}
             inputRef={usernameRef}
             variant="outlined"
           />
@@ -86,13 +86,13 @@ const AddUserModal = () => {
             type="number"
             required="true"
             fullWidth
-            placeholder="Age"
+            defaultValue={user.age}
             inputRef={ageRef}
             variant="outlined"
           />
           <FormControl component="fieldset">
             <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup aria-label="gender" name="gender" onChange={handleRadioChange}>
+            <RadioGroup aria-label="gender" name="gender" defaultValue={genderValue} onChange={handleRadioChange}>
               <FormControlLabel value="male" control={<Radio />} label="Male" />
               <FormControlLabel value="female" control={<Radio />} label="Female" />
             </RadioGroup>
@@ -103,17 +103,15 @@ const AddUserModal = () => {
             Cancel
           </Button>
           <Button
-            onClick={handleAdd}
+            onClick={handleSave}
             color="primary"
             variant="contained"
-            disabled={isLoading}
+            startIcon={<SaveIcon />}
           >
-            ADD
+            Save
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 };
-
-export { AddUserModal };

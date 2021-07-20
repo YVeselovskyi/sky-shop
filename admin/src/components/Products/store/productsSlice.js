@@ -1,16 +1,18 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const PRODUCTS_URL = 'https://infinite-bayou-82737.herokuapp.com/products';
-const ADD_PRODUCT_URL = 'https://infinite-bayou-82737.herokuapp.com/admin/addProduct';
-const EDIT_PRODUCT_URL = 'https://infinite-bayou-82737.herokuapp.com/admin/editProduct';
+const URL = 'https://infinite-bayou-82737.herokuapp.com';
+const PRODUCTS_URL = `${URL}/products`;
+const ADD_PRODUCT_URL = `${URL}/admin/addProduct`;
+const EDIT_PRODUCT_URL = `${URL}/admin/editProduct`;
+const DELETE_PRODUCT_URL = `${URL}/admin/delProduct`;
 
 export const getProducts = createAsyncThunk(
   'products/getProducts',
   async () => {
     const response = await fetch(PRODUCTS_URL);
-    const json = await response.json();
-    return json;
+    // eslint-disable-next-line no-return-await
+    return await response.json();
   },
 );
 
@@ -47,10 +49,19 @@ export const editProductById = createAsyncThunk(
   },
 );
 
-export const deleteProduct = createAsyncThunk(
+export const deleteProductById = createAsyncThunk(
   'products/deleteProductById',
-  async (userId) => {
-    await fetch(`${EDIT_PRODUCT_URL}/${userId}`, { method: 'DELETE' });
+  async (Id) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        // eslint-disable-next-line quote-props
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ _id: Id }),
+    };
+    await fetch(DELETE_PRODUCT_URL, requestOptions);
   },
 );
 
@@ -92,6 +103,16 @@ const productsSlice = createSlice({
         state.error = action.payload;
       }))
       .addCase(editProductById.fulfilled, ((state) => {
+        state.isLoading = false;
+      }))
+      .addCase(deleteProductById.pending, ((state) => {
+        state.isLoading = true;
+      }))
+      .addCase(deleteProductById.rejected, ((state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      }))
+      .addCase(deleteProductById.fulfilled, ((state) => {
         state.isLoading = false;
       }));
   },

@@ -1,16 +1,17 @@
 import React, { useRef } from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import TextField from '@material-ui/core/TextField';
-import DialogActions from '@material-ui/core/DialogActions';
-import { GridAddIcon } from '@material-ui/data-grid';
 import { useDispatch } from 'react-redux';
+import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
+import {
+  Dialog, DialogActions, DialogContent, DialogTitle,
+} from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import SaveIcon from '@material-ui/icons/Save';
+import { editProductById, getProducts } from '../../Products/store/productsSlice';
 
-import { addProduct, getProducts } from './store/productsSlice';
-
-const AddProduct = () => {
+export const EditProductModal = (props) => {
+  // eslint-disable-next-line react/destructuring-assignment
+  const { product } = props;
   const nameRef = useRef();
   const descriptionRef = useRef();
   const categoryRef = useRef();
@@ -27,16 +28,16 @@ const AddProduct = () => {
     setOpen(false);
   };
 
-  async function handleAdd() {
-    const product = {
+  async function handleSave() {
+    const editedProduct = {
       name: nameRef.current.value,
       description: descriptionRef.current.value,
-      price: +priceRef.current.value,
       category: categoryRef.current.value,
+      price: priceRef.current.value,
       imgUrl: imgUrlRef.current.value,
     };
-    // console.log(JSON.stringify(product));
-    await dispatch(addProduct(product));
+    // eslint-disable-next-line no-underscore-dangle
+    await dispatch(editProductById({ _id: product._id, editedProduct }));
     await dispatch(getProducts());
     handleClose();
   }
@@ -44,14 +45,15 @@ const AddProduct = () => {
   return (
     <div>
       <Button
+        variant="outlined"
         color="primary"
         onClick={handleClickOpen}
-        startIcon={<GridAddIcon />}
+        startIcon={<EditIcon />}
       >
-        Add
+        Edit
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add new product</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -60,6 +62,7 @@ const AddProduct = () => {
             label="Name"
             type="name"
             fullWidth
+            defaultValue={product.name}
             inputRef={nameRef}
             variant="outlined"
           />
@@ -70,6 +73,7 @@ const AddProduct = () => {
             label="Description"
             type="string"
             fullWidth
+            defaultValue={product.description}
             inputRef={descriptionRef}
             variant="outlined"
           />
@@ -80,6 +84,7 @@ const AddProduct = () => {
             label="Price"
             type="number"
             fullWidth
+            defaultValue={product.price}
             inputRef={priceRef}
             variant="outlined"
           />
@@ -90,16 +95,18 @@ const AddProduct = () => {
             label="Category"
             type="string"
             fullWidth
+            defaultValue={product.category}
             inputRef={categoryRef}
             variant="outlined"
           />
           <TextField
             autoFocus
             margin="dense"
-            id="imgUrl"
+            id="imgURL"
             label="ImageURL"
             type="string"
             fullWidth
+            defaultValue={product.imgUrl}
             inputRef={imgUrlRef}
             variant="outlined"
           />
@@ -108,13 +115,11 @@ const AddProduct = () => {
           <Button onClick={handleClose} color="primary" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleAdd} color="primary" variant="contained">
-            Add
+          <Button onClick={handleSave} color="primary" variant="contained" startIcon={<SaveIcon />}>
+            Save
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 };
-
-export { AddProduct };

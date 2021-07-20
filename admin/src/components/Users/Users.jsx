@@ -9,9 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import classes from './Users.module.css';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
-import { EditModalUser } from '../AdminPage/EditModal/EditModal';
+import { EditUserModal } from '../AdminPage/EditModal/EditUserModal';
 import { AddUserModal } from './AddUser/AddUser';
-import { deleteUser, getUsers } from './store/usersSlice';
+import { deleteUserById, getUsers } from './store/usersSlice';
 
 const Users = (props) => {
   const users = useSelector((state) => state.users.list);
@@ -66,7 +66,7 @@ const Users = (props) => {
 
       renderCell: (params: GridCellParams) => {
         const userIndex = users.findIndex((obj) => obj.id === params.id);
-        return <EditModalUser user={users[userIndex]} />;
+        return <EditUserModal user={users[userIndex]} />;
       },
     },
     {
@@ -78,7 +78,7 @@ const Users = (props) => {
         const userIndex = users.findIndex((obj) => obj.id === params.id);
         const user = users[userIndex];
 
-        return <DeleteModal item={user} onDelete={deleteUser} />;
+        return <DeleteModal item={user} onDelete={deleteUserById} />;
       },
     },
   ];

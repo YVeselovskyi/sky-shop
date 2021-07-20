@@ -6,10 +6,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import classes from './Products.module.css';
-import { EditModalProduct } from '../AdminPage/EditModal/EditModal';
+import { EditProductModal } from '../AdminPage/EditModal/EditProductModal';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
 import { AddProduct } from './AddProduct';
-import { deleteProduct, getProducts } from './store/productsSlice';
+import { deleteProductById, getProducts } from './store/productsSlice';
 
 const Products = () => {
   const goods = useSelector((state) => state.products.list);
@@ -62,7 +62,7 @@ const Products = () => {
       sortable: false,
       renderCell: (params: GridCellParams) => {
         const productIndex = goods.findIndex((obj) => obj.id === params.id);
-        return <EditModalProduct product={goods[productIndex]} />;
+        return <EditProductModal product={goods[productIndex]} />;
       },
     },
     {
@@ -73,7 +73,7 @@ const Products = () => {
       renderCell: (params: GridCellParams) => {
         const productIndex = goods.findIndex((obj) => obj.id === params.id);
         const product = goods[productIndex];
-        return <DeleteModal item={product} onDelete={deleteProduct} />;
+        return <DeleteModal item={product} onDelete={deleteProductById} />;
       },
     }];
   return (

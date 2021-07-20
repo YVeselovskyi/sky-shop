@@ -1,16 +1,18 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const USERS_URL = 'https://infinite-bayou-82737.herokuapp.com/users';
-const ADD_USER_URL = 'https://infinite-bayou-82737.herokuapp.com/admin/addUser';
-const EDIT_USER_URL = 'https://infinite-bayou-82737.herokuapp.com/admin/editUser';
+const URL = 'https://infinite-bayou-82737.herokuapp.com';
+const USERS_URL = `${URL}/users`;
+const ADD_USER_URL = `${URL}/admin/addUser`;
+const EDIT_USER_URL = `${URL}/admin/editUser`;
+const DELETE_USER_URL = `${URL}/admin/delUser`;
 
 export const getUsers = createAsyncThunk(
   'users/getUsers',
   async () => {
     const response = await fetch(USERS_URL);
-    const json = await response.json();
-    return json;
+    // eslint-disable-next-line no-return-await
+    return await response.json();
   },
 );
 
@@ -47,10 +49,19 @@ export const editUserById = createAsyncThunk(
   },
 );
 
-export const deleteUser = createAsyncThunk(
+export const deleteUserById = createAsyncThunk(
   'users/deleteUserById',
-  async (userId) => {
-    await fetch(`${USERS_URL}/${userId}`, { method: 'DELETE' });
+  async (Id) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        // eslint-disable-next-line quote-props
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ _id: Id }),
+    };
+    await fetch(DELETE_USER_URL, requestOptions);
   },
 );
 
@@ -92,6 +103,16 @@ const usersSlice = createSlice({
         state.error = action.payload;
       }))
       .addCase(editUserById.fulfilled, ((state) => {
+        state.isLoading = false;
+      }))
+      .addCase(deleteUserById.pending, ((state) => {
+        state.isLoading = true;
+      }))
+      .addCase(deleteUserById.rejected, ((state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      }))
+      .addCase(deleteUserById.fulfilled, ((state) => {
         state.isLoading = false;
       }));
   },
