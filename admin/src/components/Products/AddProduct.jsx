@@ -31,7 +31,7 @@ const AddProduct = () => {
     const product = {
       name,
       description,
-      price,
+      price: +price,
       category,
       imgUrl,
     };

@@ -33,7 +33,7 @@ export const EditProductModal = (props) => {
       name,
       description,
       category,
-      price,
+      price: +price,
       imgUrl,
     };
     // eslint-disable-next-line no-underscore-dangle
