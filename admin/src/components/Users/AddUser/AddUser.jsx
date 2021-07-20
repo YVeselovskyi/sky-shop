@@ -57,7 +57,6 @@ const AddUserModal = () => {
             type="email"
             required="true"
             fullWidth
-            placeholder="email"
             onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
           />
@@ -69,7 +68,6 @@ const AddUserModal = () => {
             type="string"
             required="true"
             fullWidth
-            placeholder="username"
             onChange={(e) => setUsername(e.target.value)}
             variant="outlined"
           />
@@ -81,7 +79,6 @@ const AddUserModal = () => {
             type="number"
             required="true"
             fullWidth
-            placeholder="Age"
             onChange={(e) => setAge(e.target.value)}
             variant="outlined"
           />
