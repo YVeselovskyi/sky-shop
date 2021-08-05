@@ -7,6 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useDispatch } from 'react-redux';
+import { getUsers } from '../../Users/store/usersSlice';
+import { getProducts } from '../../Products/store/productsSlice';
 
 const DeleteModal = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -21,10 +23,14 @@ const DeleteModal = (props) => {
     setOpen(false);
   };
 
-  const handleDelete = () => {
-    dispatch(onDelete(props.item.id));
+  async function handleDelete() {
+    await dispatch(onDelete(props.item.id));
+    // eslint-disable-next-line no-prototype-builtins
+    if (props.item.hasOwnProperty('email')) await dispatch(getUsers());
+    // eslint-disable-next-line no-prototype-builtins
+    else if (props.item.hasOwnProperty('description')) await dispatch(getProducts());
     handleClose();
-  };
+  }
 
   return (
     <div>

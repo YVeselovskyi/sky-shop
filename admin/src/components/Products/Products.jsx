@@ -3,21 +3,26 @@ import * as React from 'react';
 import {
   DataGrid, GridToolbarContainer, GridToolbarFilterButton, GridCellParams,
 } from '@material-ui/data-grid';
-import { useSelector } from 'react-redux';
-import s from './Products.module.css';
-// eslint-disable-next-line import/no-cycle
-import { EditModalProduct } from '../AdminPage/EditModal/EditModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import classes from './Products.module.css';
+import { EditProductModal } from '../AdminPage/EditModal/EditProductModal';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
-// eslint-disable-next-line import/named
 import { AddProduct } from './AddProduct';
-import { deleteProduct } from './store/productsSlice';
+import { deleteProductById, getProducts } from './store/productsSlice';
 
 const Products = () => {
-  // eslint-disable-next-line react/destructuring-assignment
   const goods = useSelector((state) => state.products.list);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) dispatch(getProducts());
+    // eslint-disable-next-line no-return-assign
+    return () => mounted = false;
+  }, [dispatch]);
   const fields = [
     {
-      field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center',
+      field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center', hide: true,
     },
     {
       field: 'name',
@@ -57,7 +62,7 @@ const Products = () => {
       sortable: false,
       renderCell: (params: GridCellParams) => {
         const productIndex = goods.findIndex((obj) => obj.id === params.id);
-        return <EditModalProduct product={goods[productIndex]} />;
+        return <EditProductModal product={goods[productIndex]} />;
       },
     },
     {
@@ -65,16 +70,14 @@ const Products = () => {
       headerName: '      ',
       width: 120,
       sortable: false,
-      // eslint-disable-next-line no-unused-vars
       renderCell: (params: GridCellParams) => {
         const productIndex = goods.findIndex((obj) => obj.id === params.id);
         const product = goods[productIndex];
-        // eslint-disable-next-line max-len
-        return <DeleteModal item={product} onDelete={deleteProduct} />;
+        return <DeleteModal item={product} onDelete={deleteProductById} />;
       },
     }];
   return (
-    <div className={s.table}>
+    <div className={classes.table}>
       <DataGrid
         rows={goods}
         columns={fields}

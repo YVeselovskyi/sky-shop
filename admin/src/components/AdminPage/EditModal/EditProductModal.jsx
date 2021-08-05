@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import TextField from '@material-ui/core/TextField';
-import DialogActions from '@material-ui/core/DialogActions';
-import { GridAddIcon } from '@material-ui/data-grid';
 import { useDispatch } from 'react-redux';
+import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
+import {
+  Dialog, DialogActions, DialogContent, DialogTitle,
+} from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import SaveIcon from '@material-ui/icons/Save';
+import { editProductById, getProducts } from '../../Products/store/productsSlice';
 
-import { addProduct, getProducts } from './store/productsSlice';
-
-const AddProduct = () => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [price, setPrice] = useState('');
-  const [imgUrl, setImgUrl] = useState('');
+export const EditProductModal = (props) => {
+  // eslint-disable-next-line react/destructuring-assignment
+  const { product } = props;
+  const [name, setName] = useState(product.name);
+  const [description, setDescription] = useState(product.description);
+  const [category, setCategory] = useState(product.category);
+  const [price, setPrice] = useState(product.price);
+  const [imgUrl, setImgUrl] = useState(product.imgUrl);
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -27,16 +28,16 @@ const AddProduct = () => {
     setOpen(false);
   };
 
-  async function handleAdd() {
-    const product = {
+  async function handleSave() {
+    const editedProduct = {
       name,
       description,
-      price: +price,
       category,
+      price: +price,
       imgUrl,
     };
-    // console.log(JSON.stringify(product));
-    await dispatch(addProduct(product));
+    // eslint-disable-next-line no-underscore-dangle
+    await dispatch(editProductById({ _id: product._id, editedProduct }));
     await dispatch(getProducts());
     handleClose();
   }
@@ -44,14 +45,15 @@ const AddProduct = () => {
   return (
     <div>
       <Button
+        variant="outlined"
         color="primary"
         onClick={handleClickOpen}
-        startIcon={<GridAddIcon />}
+        startIcon={<EditIcon />}
       >
-        Add
+        Edit
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add new product</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -60,6 +62,7 @@ const AddProduct = () => {
             label="Name"
             type="name"
             fullWidth
+            defaultValue={product.name}
             onChange={(e) => setName(e.target.value)}
             variant="outlined"
           />
@@ -70,6 +73,7 @@ const AddProduct = () => {
             label="Description"
             type="string"
             fullWidth
+            defaultValue={product.description}
             onChange={(e) => setDescription(e.target.value)}
             variant="outlined"
           />
@@ -80,6 +84,7 @@ const AddProduct = () => {
             label="Price"
             type="number"
             fullWidth
+            defaultValue={product.price}
             onChange={(e) => setPrice(e.target.value)}
             variant="outlined"
           />
@@ -90,16 +95,18 @@ const AddProduct = () => {
             label="Category"
             type="string"
             fullWidth
+            defaultValue={product.category}
             onChange={(e) => setCategory(e.target.value)}
             variant="outlined"
           />
           <TextField
             autoFocus
             margin="dense"
-            id="imgUrl"
+            id="imgURL"
             label="ImageURL"
             type="string"
             fullWidth
+            defaultValue={product.imgUrl}
             onChange={(e) => setImgUrl(e.target.value)}
             variant="outlined"
           />
@@ -108,13 +115,11 @@ const AddProduct = () => {
           <Button onClick={handleClose} color="primary" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleAdd} color="primary" variant="contained">
-            Add
+          <Button onClick={handleSave} color="primary" variant="contained" startIcon={<SaveIcon />}>
+            Save
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 };
-
-export { AddProduct };

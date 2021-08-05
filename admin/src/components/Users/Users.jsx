@@ -5,21 +5,29 @@ import {
   GridToolbarFilterButton,
   GridCellParams,
 } from '@material-ui/data-grid';
-import { useSelector } from 'react-redux';
-import s from './Users.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import classes from './Users.module.css';
 import { DeleteModal } from '../AdminPage/DeleteModal/DeleteModal';
-// eslint-disable-next-line import/no-cycle
-import { EditModalUser } from '../AdminPage/EditModal/EditModal';
+import { EditUserModal } from '../AdminPage/EditModal/EditUserModal';
 import { AddUserModal } from './AddUser/AddUser';
-// eslint-disable-next-line import/named
-import { deleteUser } from './store/usersSlice';
+import { deleteUserById, getUsers } from './store/usersSlice';
 
 const Users = (props) => {
-  // eslint-disable-next-line react/destructuring-assignment
   const users = useSelector((state) => state.users.list);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      dispatch(getUsers());
+    }
+    // eslint-disable-next-line no-return-assign
+    return () => mounted = false;
+  }, [dispatch]);
+
   const fields = [
     {
-      field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center',
+      field: 'id', headerName: 'ID', width: 70, headerAlign: 'center', align: 'center', hide: true,
     },
     {
       field: 'email',
@@ -58,7 +66,7 @@ const Users = (props) => {
 
       renderCell: (params: GridCellParams) => {
         const userIndex = users.findIndex((obj) => obj.id === params.id);
-        return <EditModalUser user={users[userIndex]} />;
+        return <EditUserModal user={users[userIndex]} />;
       },
     },
     {
@@ -66,18 +74,17 @@ const Users = (props) => {
       headerName: '      ',
       width: 120,
       sortable: false,
-      // eslint-disable-next-line no-unused-vars
       renderCell: (params: GridCellParams) => {
         const userIndex = users.findIndex((obj) => obj.id === params.id);
         const user = users[userIndex];
 
-        return <DeleteModal item={user} onDelete={deleteUser} />;
+        return <DeleteModal item={user} onDelete={deleteUserById} />;
       },
     },
   ];
 
   return (
-    <div className={s.table}>
+    <div className={classes.table}>
       <DataGrid
         rows={users}
         columns={fields}

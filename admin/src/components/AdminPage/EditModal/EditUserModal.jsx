@@ -1,53 +1,53 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
 import {
   FormControl, FormControlLabel, FormLabel, Radio, RadioGroup,
+  Dialog, DialogActions, DialogContent, DialogTitle,
 } from '@material-ui/core';
-import { GridAddIcon } from '@material-ui/data-grid';
 import { useDispatch } from 'react-redux';
-import { addUser, getUsers } from '../store/usersSlice';
+import { editUserById, getUsers } from '../../Users/store/usersSlice';
 
-const AddUserModal = () => {
+export const EditUserModal = (props) => {
   // eslint-disable-next-line react/destructuring-assignment
-  const [open, setOpen] = React.useState(false);
-  const [email, setEmail] = React.useState('');
-  const [username, setUsername] = React.useState('');
-  const [age, setAge] = React.useState('');
-  const [gender, setGender] = React.useState('');
+  const { user } = props;
   const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
+  const [email, setEmail] = React.useState(user.email);
+  const [username, setUsername] = React.useState(user.username);
+  const [age, setAge] = React.useState(user.age);
+  const [gender, setGender] = React.useState(user.gender);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  async function handleAdd() {
-    const user = {
+  async function handleSave() {
+    const editedUser = {
       email,
       username,
       age: +age,
       gender,
     };
-    await dispatch(addUser(user));
+    // eslint-disable-next-line no-underscore-dangle,
+    await dispatch(editUserById({ _id: user._id, editedUser }));
     await dispatch(getUsers());
     handleClose();
   }
 
-  const handleOpen = () => {
+  const handleClickOpen = () => {
     setOpen(true);
   };
 
   return (
     <div>
-      <Button color="primary" onClick={handleOpen} startIcon={<GridAddIcon />}>
-        Add
+      <Button variant="outlined" color="primary" onClick={handleClickOpen} startIcon={<EditIcon />}>
+        Edit
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add new user</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -57,6 +57,7 @@ const AddUserModal = () => {
             type="email"
             required="true"
             fullWidth
+            defaultValue={user.email}
             onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
           />
@@ -68,6 +69,7 @@ const AddUserModal = () => {
             type="string"
             required="true"
             fullWidth
+            defaultValue={user.username}
             onChange={(e) => setUsername(e.target.value)}
             variant="outlined"
           />
@@ -79,6 +81,7 @@ const AddUserModal = () => {
             type="number"
             required="true"
             fullWidth
+            defaultValue={user.age}
             onChange={(e) => setAge(e.target.value)}
             variant="outlined"
           />
@@ -87,6 +90,7 @@ const AddUserModal = () => {
             <RadioGroup
               aria-label="gender"
               name="gender"
+              defaultValue={gender}
               onChange={(e) => setGender(e.target.value)}
             >
               <FormControlLabel value="male" control={<Radio />} label="Male" />
@@ -99,16 +103,15 @@ const AddUserModal = () => {
             Cancel
           </Button>
           <Button
-            onClick={handleAdd}
+            onClick={handleSave}
             color="primary"
             variant="contained"
+            startIcon={<SaveIcon />}
           >
-            ADD
+            Save
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 };
-
-export { AddUserModal };

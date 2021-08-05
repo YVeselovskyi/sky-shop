@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import Media from 'react-media';
 import PropTypes from 'prop-types';
@@ -6,9 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-// eslint-disable-next-line import/no-cycle
 import { Products } from '../Products/Products';
-// eslint-disable-next-line import/no-cycle
 import { Users } from '../Users/Users';
 
 function TabPanel(props) {
@@ -47,6 +44,32 @@ function a11yProps(index) {
 }
 let useStyles;
 
+const desktopStyles = makeStyles((theme) => ({
+  root: {
+    display: 'grid',
+    gridTemplateRows: '1fr 1fr',
+    gridTemplateColumns: '1fr 7fr',
+    backgroundColor: theme.palette.background.paper,
+    height: 224,
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
+const mobileStyles = makeStyles((theme) => ({
+  root: {
+    display: 'grid',
+    gridTemplateRows: '1fr 1fr',
+    gridTemplateColumns: '1fr',
+    backgroundColor: theme.palette.background.paper,
+    height: 224,
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
 const Nav = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -59,6 +82,7 @@ const Nav = (props) => {
 
     <div className={classes.root}>
       <Tabs
+          /* eslint-disable-next-line react/destructuring-assignment */
         orientation={props.tabsVariant}
         variant="standard"
         value={value}
@@ -86,30 +110,7 @@ const Navbar = () => {
       <Media query="(max-width: 990px)">
         {(matches) => {
           tabsVariant = (matches ? ('horizontal') : ('vertical'));
-          useStyles = (matches) ? makeStyles((theme) => ({
-            root: {
-              display: 'grid',
-              gridTemplateRows: '1fr 1fr',
-              gridTemplateColumns: '1fr',
-              backgroundColor: theme.palette.background.paper,
-              height: 224,
-            },
-            tabs: {
-              borderRight: `1px solid ${theme.palette.divider}`,
-            },
-          }))
-            : makeStyles((theme) => ({
-              root: {
-                display: 'grid',
-                gridTemplateRows: '1fr 1fr',
-                gridTemplateColumns: '1fr 7fr',
-                backgroundColor: theme.palette.background.paper,
-                height: 224,
-              },
-              tabs: {
-                borderRight: `1px solid ${theme.palette.divider}`,
-              },
-            }));
+          useStyles = (matches) ? mobileStyles : desktopStyles;
           return (
             <Nav
               tabsVariant={tabsVariant}
